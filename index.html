@@ -269,6 +269,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
 .s-ai .big.oro { color: var(--oro); }
 .s-ai .mid p { margin-top: calc(var(--u) * 2.4); font-size: calc(var(--u) * 2.4); color: var(--crema-tenue); }
 .s-ai .mid p.fixed { margin-top: calc(var(--u) * 1.2); font-size: calc(var(--u) * 1.9); color: var(--oro); }
+.s-ai .ai-led { margin-top: calc(var(--u) * 4); font-size: calc(var(--u) * 2.3); }
 .s-ai .wh { margin-top: calc(var(--u) * 3.5); display: flex; gap: calc(var(--u) * 6); font-size: calc(var(--u) * 2); color: var(--gris-claro); }
 .s-ai .wh b { display: block; font-family: var(--display); font-size: calc(var(--u) * 3.6); color: var(--papel); font-weight: 700; letter-spacing: -0.015em; }
 
@@ -437,6 +438,14 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
 .s-five .vol .j .big { color: var(--jade); }
 .s-five .even { grid-column: 1 / -1; margin-top: calc(var(--u) * 2.5); font-family: var(--display); font-weight: 700; font-size: calc(var(--u) * 2.8); letter-spacing: -0.015em; color: var(--jade); font-variation-settings: "opsz" 48; }
 
+/* Equivalencias con objetos conocidos */
+.eqv { display: flex; align-items: center; gap: calc(var(--u) * 1.8); font-size: calc(var(--u) * 2.45); line-height: 1.25; color: var(--carbon); margin-top: calc(var(--u) * 2); }
+.eqv svg { width: calc(var(--u) * 4.2); height: calc(var(--u) * 4.2); flex: none; color: var(--oro-tinta); }
+.eqv b { font-family: var(--display); font-weight: 750; letter-spacing: -0.01em; }
+.dark .eqv { color: var(--papel); }
+.dark .eqv svg { color: var(--oro); }
+.s-save .num .eqv { justify-content: flex-end; text-align: right; }
+
 /* Notas del orador */
 .notes { display: none; }
 .np {
@@ -501,6 +510,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
   .s-law .art .big { font-size: calc(var(--u) * 22); }
   .s-law .princ-h { margin-bottom: 0; }
   .s-save .num { text-align: left; }
+  .s-save .num .eqv { justify-content: flex-start; text-align: left; }
   .s-save .big { font-size: calc(var(--u) * 11); }
   .s-ops .big { font-size: calc(var(--u) * 11.5); }
   .s-ai .big { font-size: calc(var(--u) * 15); }
@@ -629,8 +639,10 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
       <div class="big r" style="--i:2"><span class="count" data-to="0.3" data-dec="1">0,3</span> a <span class="count" data-to="1.7" data-dec="1">1,7</span><span class="unit"> kg</span></div>
       <p class="r" style="--i:3">de CO₂e evitados por mes</p>
       <p class="verdict r" style="--i:5">Real, pero chico.</p>
+      <p class="eqv r" style="--i:6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><span>50 a 250 hojas: de <b>un décimo a media resma</b></span></p>
+      <p class="eqv r" style="--i:7"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v4a1 1 0 0 1-1 1h-1.2M3 13v4a1 1 0 0 0 1 1h1.2M3 13h18M8.8 18h6.4"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg><span>como andar <b>2 a 10 km</b> en auto</span></p>
     </div>
-    <p class="src r" style="--i:6">Supuesto: 0,1 a 0,5 hojas A4 por turno, 505 turnos (agosto de 2026). 6,7 g de CO₂e por hoja (DESNZ, 2024). Los recordatorios bajan las ausencias cerca de 25 % (Robotham et al., 2016).</p>
+    <p class="src r" style="--i:8">Supuesto: 0,1 a 0,5 hojas A4 por turno, 505 turnos (agosto de 2026). 6,7 g de CO₂e por hoja (DESNZ, 2024). Los recordatorios bajan las ausencias cerca de 25 % (Robotham et al., 2016).</p>
     <div class="notes">El papel no es el villano: cumple su función. Supuse entre 0,1 y 0,5 hojas por turno. Da 0,3 a 1,7 kg de CO2e por mes. Digo que es chico para no caer en greenwashing. El otro aporte es la eficiencia: el recordatorio libera horarios y evita el local abierto sin servicio.</div>
   </section>
 
@@ -641,6 +653,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
       <div class="r" style="--i:1">
         <div class="big"><span class="count" data-to="2.1" data-dec="1">2,1</span> a <span class="count" data-to="9.5" data-dec="1">9,5</span><span class="unit"> kg</span></div>
         <p class="tag">de CO₂e por mes para operar el producto</p>
+        <p class="eqv" style="--i:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v4a1 1 0 0 1-1 1h-1.2M3 13v4a1 1 0 0 0 1 1h1.2M3 13h18M8.8 18h6.4"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg><span>como andar <b>12 a 56 km</b> en auto</span></p>
       </div>
       <ul class="parts">
         <li class="r" style="--i:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="4" y="3.5" width="16" height="7" rx="1.5"/><rect x="4" y="13.5" width="16" height="7" rx="1.5"/><path d="M8 7h.01M8 17h.01M12 7h4M12 17h4"/></svg><b>Nube</b><span>AWS San Pablo, 5 a 12 kWh por mes</span></li>
@@ -663,14 +676,12 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
       <div class="r" style="--i:3">
         <div class="big oro"><span class="count" data-to="6">6</span> a <span class="count" data-to="60">60</span><span class="unit"> kg</span></div>
         <p>de CO₂e por mes</p>
+        <p class="eqv" style="--i:3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v4a1 1 0 0 1-1 1h-1.2M3 13v4a1 1 0 0 0 1 1h1.2M3 13h18M8.8 18h6.4"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg><span>como andar <b>36 a 350 km</b> en auto</span></p>
         <p class="fixed">Costo fijo de desarrollo: por turno, baja con la escala.</p>
       </div>
     </div>
-    <div class="wh r" style="--i:4">
-      <div><b>2,9 Wh</b>por consulta, IEA 2024</div>
-      <div><b>0,3 Wh</b>por consulta, Epoch AI 2025</div>
-    </div>
-    <p class="src r" style="--i:5">Registro local de Claude Code al 1/10/2026. 13 a 127 kWh en el mes con la red mundial: 0,471 kg CO₂e/kWh (Ember, 2024). Google informó 0,24 Wh por consulta a Gemini (2025).</p>
+    <p class="eqv r ai-led" style="--i:4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></svg><span>Cada consulta: <b>0,3 a 2,9 Wh</b>, entre <b>2 y 17 minutos</b> de una lamparita LED</span></p>
+    <p class="src r" style="--i:5">Registro local de Claude Code al 1/10/2026. Energía por consulta: 2,9 Wh (IEA, 2024) y 0,3 Wh (Epoch AI, 2025), lamparita LED de 10 W. 13 a 127 kWh en el mes con la red mundial: 0,471 kg CO₂e/kWh (Ember, 2024). Google informó 0,24 Wh por consulta a Gemini (2025).</p>
     <div class="notes">La respuesta a la pregunta del profe. Dato real de mi registro de uso: 43.681 llamadas en 30 días. Rango por la discusión: IEA 2,9 Wh, Epoch y Google 0,24 a 0,3 Wh. Uso el rango. Precaución: la falta de certeza no es excusa. Y el valor alto puede quedarse corto, porque cada llamada carga mucho contexto. Ojo: esto es construir el producto, no usarlo. Es un costo fijo: si la plataforma gestiona diez veces más turnos, por turno pesa casi diez veces menos.</div>
   </section>
 
@@ -696,9 +707,10 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
     <div class="side">
       <div class="big r" style="--i:3"><span class="count" data-to="18">18</span> a <span class="count" data-to="35">35</span><span class="unit"> veces</span></div>
       <p class="r" style="--i:4">pesa la IA frente al papel evitado, escenario contra escenario</p>
-      <p class="km r" style="--i:5"><b>Es la etapa de arranque:</b> con pocos turnos, los costos fijos pesan más. Hoy genera más de lo que evita, y es chico: el valor alto equivale a unos 350 km en auto por mes.</p>
+      <p class="km r" style="--i:5"><b>Es la etapa de arranque:</b> con pocos turnos, los costos fijos pesan más. Hoy genera más de lo que evita, y es chico.</p>
+      <p class="eqv r" style="--i:6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v4a1 1 0 0 1-1 1h-1.2M3 13v4a1 1 0 0 0 1 1h1.2M3 13h18M8.8 18h6.4"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg><span>El valor alto equivale a <b>unos 350 km en auto</b> por mes</span></p>
     </div>
-    <p class="src r" style="--i:6">Elaboración propia, agosto de 2026. Barra llena: escenario bajo. Barra clara: escenario alto. El efecto rebote, en Lange, Pohl y Santarius (2020).</p>
+    <p class="src r" style="--i:7">Elaboración propia, agosto de 2026. Auto promedio: 170 g de CO₂e por km. Barra llena: escenario bajo. Barra clara: escenario alto. El efecto rebote, en Lange, Pohl y Santarius (2020).</p>
     <div class="notes">La idea central. Usar diVenuo pesa poco: 4 a 19 g por turno. Y estamos en el arranque: con pocos turnos, los costos fijos pesan más por turno. Le pasa a cualquier servicio digital chico. Lo que más pesa es construirlo con IA. Igual, digitalizar no es verde por defecto: hoy genera más de lo que evita. Pero ojo con el pánico: 60 kg es menos que lo que emite una persona argentina en una semana. Lo importante es la estructura: servidor y desarrollo son costos fijos, se diluyen con escala. El riesgo es el efecto rebote. Y la palanca está en cómo se construye.</div>
   </section>
 
@@ -770,7 +782,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
     </div>
     <div class="vol">
       <div class="r" style="--i:3"><div class="big"><span class="count" data-to="50500">50.500</span></div><p>turnos por mes en 2031</p></div>
-      <div class="j r" style="--i:5"><div class="big"><span class="count" data-to="68">68</span> a <span class="count" data-to="338">338</span><span class="unit"> mil</span></div><p>hojas de papel menos en cinco años</p></div>
+      <div class="j r" style="--i:5"><div class="big"><span class="count" data-to="68">68</span> a <span class="count" data-to="338">338</span><span class="unit"> mil</span></div><p>hojas de papel menos en cinco años</p><p class="eqv" style="--i:6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><span>unas <b>135 a 677 resmas</b></span></p></div>
     </div>
     <p class="even r" style="--i:6">En el escenario bajo, desde mediados de 2028 cada turno evita más de lo que genera.</p>
     <p class="src r" style="--i:7">Escenario hipotético, no pronóstico. Supuestos: crecimiento ×100 en cinco años (unas 2,5 veces por año), 24 turnos por negocio, servidor y desarrollo fijos, factores de agosto de 2026. En el escenario alto el total del mes crece con la escala: efecto rebote.</p>
@@ -782,7 +794,8 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
     <div class="left">
       <h2 class="r" style="--i:0">La etiqueta ambiental del turno</h2>
       <p class="lead r" style="--i:1">Como la tabla nutricional de un alimento.</p>
-      <p class="laws r" style="--i:2">Acceso a la información ambiental: Ley 25.831 y Acuerdo de Escazú.<br>Educación ambiental: Ley 27.621.</p>
+      <p class="eqv r" style="--i:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v4a1 1 0 0 1-1 1h-1.2M3 13v4a1 1 0 0 0 1 1h1.2M3 13h18M8.8 18h6.4"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg><span>Un turno equivale a andar <b>80 a 800 metros</b> en auto</span></p>
+      <p class="laws r" style="--i:3">Acceso a la información ambiental: Ley 25.831 y Acuerdo de Escazú.<br>Educación ambiental: Ley 27.621.</p>
     </div>
     <div class="printer" aria-label="Etiqueta ambiental de un turno">
       <div class="slot" aria-hidden="true"></div>
