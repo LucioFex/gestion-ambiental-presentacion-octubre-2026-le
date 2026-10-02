@@ -280,6 +280,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
 .s-ai .big { font-size: calc(var(--u) * 18); color: var(--papel); }
 .s-ai .big.oro { color: var(--oro); }
 .s-ai .mid p { margin-top: calc(var(--u) * 2.4); font-size: calc(var(--u) * 2.4); color: var(--crema-tenue); }
+.s-ai .mid p.fixed { margin-top: calc(var(--u) * 1.2); font-size: calc(var(--u) * 1.9); color: var(--oro); }
 .s-ai .wh { margin-top: calc(var(--u) * 3.5); display: flex; gap: calc(var(--u) * 6); font-size: calc(var(--u) * 2); color: var(--gris-claro); }
 .s-ai .wh b { display: block; font-family: var(--display); font-size: calc(var(--u) * 3.6); color: var(--papel); font-weight: 700; letter-spacing: -0.015em; }
 
@@ -433,11 +434,13 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
   .bar i { display: block; height: 100%; background: var(--oro); width: 100%; transform: scaleX(0); transform-origin: left; transition: transform .6s var(--ease); }
   .slide {
     left: 0;
-    padding: calc(var(--u) * 7) calc(var(--u) * 3.4) calc(var(--u) * 12);
-    align-content: center;
+    padding: calc(var(--u) * 7) calc(var(--u) * 3.4) calc(var(--u) * 5);
+    align-content: safe center;
     overflow-y: auto;
   }
-  .src { left: calc(var(--u) * 3.4); right: calc(var(--u) * 3.4); bottom: calc(var(--u) * 3); font-size: calc(var(--u) * 1.25); }
+  .src { position: static; grid-column: 1 / -1; margin-top: calc(var(--u) * 1); font-size: calc(var(--u) * 1.25); }
+  .chart { gap: calc(var(--u) * 2.8); }
+  .s-bal .side .km { margin-top: calc(var(--u) * 3); }
   h2 { font-size: calc(var(--u) * 6.8); }
   .s-cover h1 { font-size: calc(var(--u) * 9.6); }
   .s-cover .who { grid-template-columns: 1fr; font-size: calc(var(--u) * 2); }
@@ -600,6 +603,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
       <div class="r" style="--i:3">
         <div class="big oro"><span class="count" data-to="6">6</span> a <span class="count" data-to="60">60</span><span class="unit"> kg</span></div>
         <p>de CO₂e por mes</p>
+        <p class="fixed">Costo fijo de desarrollo: por turno, baja con la escala.</p>
       </div>
     </div>
     <div class="wh r" style="--i:4">
@@ -607,12 +611,12 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
       <div><b>0,3 Wh</b>por consulta, Epoch AI 2025</div>
     </div>
     <p class="src r" style="--i:5">Registro local de Claude Code al 1/10/2026. 13 a 127 kWh en el mes con la red mundial: 0,471 kg CO₂e/kWh (Ember, 2024). Google informó 0,24 Wh por consulta a Gemini (2025).</p>
-    <div class="notes">La respuesta a la pregunta del profe. Dato real de mi registro de uso: 43.681 llamadas en 30 días. Rango por la discusión: IEA 2,9 Wh, Epoch y Google 0,24 a 0,3 Wh. Uso el rango. Precaución: la falta de certeza no es excusa. Y el valor alto puede quedarse corto, porque cada llamada carga mucho contexto.</div>
+    <div class="notes">La respuesta a la pregunta del profe. Dato real de mi registro de uso: 43.681 llamadas en 30 días. Rango por la discusión: IEA 2,9 Wh, Epoch y Google 0,24 a 0,3 Wh. Uso el rango. Precaución: la falta de certeza no es excusa. Y el valor alto puede quedarse corto, porque cada llamada carga mucho contexto. Ojo: esto es construir el producto, no usarlo. Es un costo fijo: si la plataforma gestiona diez veces más turnos, por turno pesa casi diez veces menos.</div>
   </section>
 
   <!-- 8 -->
   <section class="slide s-bal" data-time="16:00" data-title="El balance" aria-label="El balance">
-    <h2 class="r" style="--i:0">Hoy <svg class="dv" role="img" aria-label="diVenuo"><use href="#dv"/></svg> genera más de lo que evita</h2>
+    <h2 class="r" style="--i:0">Usarlo pesa poco. Programarlo pesa más.</h2>
     <div class="chart r" style="--i:1" role="img" aria-label="kg de CO2e por mes. Papel que evita: 0,3 a 1,7. Operar el producto: 2,1 a 9,5. Programarlo con IA: 6,2 a 59,7.">
       <div class="row papel" style="--i:0">
         <div class="lbl">Papel que evita <em>0,3 a 1,7 kg</em></div>
@@ -632,10 +636,10 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
     <div class="side">
       <div class="big r" style="--i:3"><span class="count" data-to="18">18</span> a <span class="count" data-to="35">35</span><span class="unit"> veces</span></div>
       <p class="r" style="--i:4">pesa la IA frente al papel evitado, escenario contra escenario</p>
-      <p class="km r" style="--i:5"><b>Igual es chico.</b> El valor alto equivale a unos 350 km en auto por mes.</p>
+      <p class="km r" style="--i:5"><b>Hoy <svg class="dv" role="img" aria-label="diVenuo"><use href="#dv"/></svg> genera más de lo que evita,</b> pero es chico: el valor alto equivale a unos 350 km en auto por mes.</p>
     </div>
     <p class="src r" style="--i:6">Elaboración propia, agosto de 2026. Barra llena: escenario bajo. Barra clara: escenario alto. El efecto rebote, en Lange, Pohl y Santarius (2020).</p>
-    <div class="notes">La idea central. Digitalizar no es verde por defecto. Pero ojo con el pánico: 60 kg es menos que lo que emite una persona argentina en una semana. Lo importante es la estructura: servidor y desarrollo son costos fijos, se diluyen con escala. El riesgo es el efecto rebote. Y la palanca está en cómo se construye.</div>
+    <div class="notes">La idea central. Usar diVenuo pesa poco: 4 a 19 g por turno. Lo que más pesa es construirlo con IA. Igual, digitalizar no es verde por defecto: hoy genera más de lo que evita. Pero ojo con el pánico: 60 kg es menos que lo que emite una persona argentina en una semana. Lo importante es la estructura: servidor y desarrollo son costos fijos, se diluyen con escala. El riesgo es el efecto rebote. Y la palanca está en cómo se construye.</div>
   </section>
 
   <!-- 9 -->
@@ -671,12 +675,12 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
     </div>
     <div class="week">
       <div class="r" style="--i:2"><div class="L">P</div><div class="n">Planificar</div><div class="d">Política ambiental de cinco líneas</div></div>
-      <div class="key r" style="--i:3"><div class="L">H</div><div class="n">Hacer</div><div class="d">IA proporcional, mails livianos</div></div>
+      <div class="key r" style="--i:3"><div class="L">H</div><div class="n">Hacer</div><div class="d">Memoria curada, contexto acotado, modelo proporcional</div></div>
       <div class="r" style="--i:4"><div class="L">V</div><div class="n">Verificar</div><div class="d">CO₂e por turno, cada trimestre</div></div>
       <div class="r" style="--i:5"><div class="L">A</div><div class="n">Actuar</div><div class="d">Publicar el resultado</div></div>
     </div>
     <p class="src r" style="--i:6">Diagnóstico externo gratuito: Evaluación de Impacto B, Sistema B.</p>
-    <div class="notes">Progresividad: empezar por poco. La medida de más impacto es la IA proporcional, porque es lo que más pesa en el balance. Verificar: CO2e por turno, llamadas de IA por funcionalidad y mails por reserva. Publicar el resultado conecta con acceso a la información. La Evaluación de Impacto B es gratuita y online y sirve de diagnóstico sin certificar.</div>
+    <div class="notes">Progresividad: empezar por poco. La medida de más impacto es la IA proporcional, porque es lo que más pesa en el balance. Memoria curada: el asistente consulta un resumen ordenado del proyecto (método de wiki de Karpathy) en vez de releer todo. Contexto acotado: mandar solo lo necesario en cada llamada. Modelo proporcional: modelos chicos para tareas simples. Menos iteraciones: pedir bien una vez. Lo mide el indicador de llamadas de IA por funcionalidad. También mails livianos. Verificar: CO2e por turno, llamadas de IA por funcionalidad y mails por reserva. Publicar el resultado conecta con acceso a la información. La Evaluación de Impacto B es gratuita y online y sirve de diagnóstico sin certificar.</div>
   </section>
 
   <!-- 11 -->
@@ -684,7 +688,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
     <h2 class="r" style="--i:0">Lo digital también pesa. <span class="soft">Medirlo antes de que crezca es prevenir.</span></h2>
     <p class="lead r" style="--i:1">El papel que evitamos es lo de menos. La huella está en cómo construimos el software, y eso lo decidimos los que diseñamos sistemas.</p>
     <p class="ask r" style="--i:2">¿Preguntas?</p>
-    <div class="notes">Cerrar con la mirada personal: yo hubiera defendido que diVenuo es verde porque reemplaza papel. Los números dicen otra cosa, y antes ni miraba ese número. El artículo 41 incluye al software.</div>
+    <div class="notes">Cerrar con la mirada personal: yo hubiera defendido que diVenuo es verde porque reemplaza papel. Los números dicen otra cosa, y antes ni miraba ese número. El artículo 41 incluye al software. Medirse es el primer paso para que crecer no sea crecer en huella.</div>
   </section>
 </main>
 
