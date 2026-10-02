@@ -377,6 +377,56 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
 /* Wordmark de diVenuo: Outfit 800, punto propio y la V como cinta dorada */
 .dv { display: inline-block; height: 1.095em; width: 4em; vertical-align: -0.167em; overflow: visible; margin-right: .04em; }
 
+/* Con escala */
+.s-scale { grid-template-rows: auto 1fr; }
+.s-scale > div { align-self: center; }
+.cols { align-self: center; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-left: 1px solid var(--regla); }
+.cols > div { padding: 0 calc(var(--u) * 3.4); border-right: 1px solid var(--regla); }
+.cols .k { font-family: var(--display); font-weight: 750; font-size: calc(var(--u) * 3.6); letter-spacing: -0.02em; font-variation-settings: "opsz" 72; }
+.cols .t { font-size: calc(var(--u) * 1.8); color: var(--gris); margin-top: calc(var(--u) * .6); font-variant-numeric: tabular-nums; }
+.cols .big { font-size: calc(var(--u) * 8.6); margin-top: calc(var(--u) * 3.4); }
+.cols .big .unit { font-size: .42em; }
+.cols .per { font-size: calc(var(--u) * 1.8); color: var(--gris); margin-top: calc(var(--u) * 1.2); }
+.cols .now .k, .cols .now .big { color: var(--gris); }
+.rng { position: relative; height: calc(var(--u) * 1.6); margin-top: calc(var(--u) * 2.6); background: var(--papel-2); }
+.rng::before { content: ""; position: absolute; left: var(--z); top: calc(var(--u) * -.8); bottom: calc(var(--u) * -.8); width: 1px; background: var(--carbon); }
+.rng i { position: absolute; top: 0; bottom: 0; transform-origin: left center; transform: scaleX(0); transition: transform 1.3s var(--ease); transition-delay: calc(var(--i) * 140ms + 500ms); }
+.rng .neg { background: var(--jade); }
+.rng .pos { background: var(--carbon); opacity: .78; }
+.slide.active .rng i { transform: scaleX(1); }
+.s-scale .even { margin-top: calc(var(--u) * 4.5); font-family: var(--display); font-weight: 700; font-size: calc(var(--u) * 3); letter-spacing: -0.015em; color: var(--jade); font-variation-settings: "opsz" 48; max-width: 40ch; }
+
+/* A cinco años */
+.s-five { grid-template-columns: 1fr calc(var(--u) * 44); grid-template-rows: auto 1fr; column-gap: calc(var(--u) * 6); }
+.s-five .head { grid-column: 1 / -1; }
+.s-five .sub { font-size: calc(var(--u) * 2.2); color: var(--gris); margin-top: calc(var(--u) * 1.8); }
+.s-five .plot { align-self: center; }
+.s-five .cap { font-size: calc(var(--u) * 1.6); color: var(--gris); margin-bottom: calc(var(--u) * 1); }
+.s-five .cap b { color: var(--carbon); font-weight: 600; }
+.s-five .cap .j { color: var(--jade); font-weight: 600; }
+.traj { width: 100%; height: auto; overflow: visible; font-family: var(--texto); }
+.traj text { font-size: 13px; fill: var(--gris); font-variant-numeric: tabular-nums; }
+.traj .gl { stroke: var(--regla); stroke-width: 1; }
+.traj .zero { stroke: var(--carbon); stroke-width: 1.2; }
+.traj .band { fill: var(--carbon); opacity: 0; transition: opacity 1s var(--ease) 1.4s; }
+.slide.active .traj .band { opacity: .07; }
+.traj polyline { fill: none; stroke-width: 3.5; stroke-linejoin: round; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.8s var(--ease) .5s; }
+.traj .lh { stroke: var(--carbon); }
+.traj .ll { stroke: var(--jade); transition-delay: .8s; }
+.slide.active .traj polyline { stroke-dashoffset: 0; }
+.traj circle { opacity: 0; transition: opacity .3s linear; transition-delay: calc(var(--i) * 260ms + 700ms); }
+.traj .dh { fill: var(--carbon); }
+.traj .dl { fill: var(--jade); }
+.slide.active .traj circle { opacity: 1; }
+.traj .vl { font-family: var(--display); font-weight: 700; font-size: 17px; fill: var(--carbon); }
+.traj .vj { fill: var(--jade); }
+.s-five .vol { align-self: center; display: grid; gap: calc(var(--u) * 3); }
+.s-five .vol .big { font-size: calc(var(--u) * 7.4); }
+.s-five .vol .big .unit { font-size: .4em; }
+.s-five .vol p { font-size: calc(var(--u) * 1.9); color: var(--gris); margin-top: calc(var(--u) * .8); }
+.s-five .vol .j .big { color: var(--jade); }
+.s-five .even { grid-column: 1 / -1; margin-top: calc(var(--u) * 2.5); font-family: var(--display); font-weight: 700; font-size: calc(var(--u) * 2.8); letter-spacing: -0.015em; color: var(--jade); font-variation-settings: "opsz" 48; }
+
 /* Notas del orador */
 .notes { display: none; }
 .np {
@@ -451,6 +501,14 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
   .s-label .printer { margin: 0 calc(var(--u) * 2); }
   .s-label .left .laws { display: none; }
   .week { grid-template-columns: repeat(2, 1fr); row-gap: calc(var(--u) * 4); }
+  .s-scale { grid-template-rows: none; gap: calc(var(--u) * 4); }
+  .s-five { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; gap: calc(var(--u) * 4); }
+  .s-five .vol .big { font-size: calc(var(--u) * 6.6); }
+  .traj text { font-size: 15px; }
+  .cols { grid-template-columns: minmax(0, 1fr); border-left: 0; row-gap: calc(var(--u) * 3.4); }
+  .cols > div { border-right: 0; border-top: 1px solid var(--regla); padding: calc(var(--u) * 2.4) 0 0; }
+  .cols .big { font-size: calc(var(--u) * 7.4); margin-top: calc(var(--u) * 1.6); }
+  .s-scale .even { font-size: calc(var(--u) * 2.6); margin-top: 0; }
   .week .L { font-size: calc(var(--u) * 11); }
   .s-end h2 { font-size: calc(var(--u) * 8.6); }
   .np { font-size: 15px; }
@@ -631,6 +689,59 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
   </section>
 
   <!-- 9 -->
+  <section class="slide s-scale" data-time="" data-title="Con escala" aria-label="Con escala">
+    <h2 class="r" style="--i:0">Con escala, cada turno pesa menos</h2>
+    <div>
+      <div class="cols">
+        <div class="now r" style="--i:1"><div class="k">Hoy</div><div class="t">505 turnos por mes · 21 negocios</div>
+          <div class="big"><span class="count" data-to="13">13</span> a <span class="count" data-to="136">136</span><span class="unit"> g</span></div>
+          <div class="per">de CO₂e neto por turno</div><div class="rng" style="--z:3.45%"><i class="pos" style="left:12.39%;width:84.97%"></i></div></div>
+        <div class="r" style="--i:2"><div class="k">× 10</div><div class="t">5.050 turnos por mes · unos 210 negocios</div>
+          <div class="big"><span class="count" data-to="-1">−1</span> a <span class="count" data-to="22">22</span><span class="unit"> g</span></div>
+          <div class="per">de CO₂e neto por turno</div><div class="rng" style="--z:3.45%"><i class="neg" style="left:2.70%;width:0.75%"></i><i class="pos" style="left:3.45%;width:15.50%"></i></div></div>
+        <div class="r" style="--i:3"><div class="k">× 100</div><div class="t">50.500 turnos por mes · unos 2.100 negocios</div>
+          <div class="big"><span class="count" data-to="-2.5" data-dec="1">−2,5</span> a <span class="count" data-to="11">11</span><span class="unit"> g</span></div>
+          <div class="per">de CO₂e neto por turno</div><div class="rng" style="--z:3.45%"><i class="neg" style="left:1.72%;width:1.72%"></i><i class="pos" style="left:3.45%;width:7.66%"></i></div></div>
+      </div>
+      <p class="even r" style="--i:4">En el escenario bajo, desde unos 3.000 turnos por mes evita más de lo que genera.</p>
+    </div>
+    <p class="src r" style="--i:5">Proyección propia sobre el balance de agosto de 2026. Supuestos: servidor y desarrollo con IA quedan fijos, mails, tráfico y papel crecen con los turnos, 24 turnos por negocio como hoy. Riesgo: efecto rebote (Lange, Pohl y Santarius, 2020).</p>
+    <div class="notes">El servidor y el desarrollo son costos fijos: se reparten entre más turnos. Con diez veces más turnos, cada turno pesa entre −1 y 22 g. En el escenario bajo, desde unos 3.000 turnos por mes diVenuo evita más de lo que genera. En el alto no llega a cero, porque mails y tráfico por turno pesan más que el papel: ahí la palanca es el correo liviano. Ojo con el total: si crece mucho, en el escenario alto el total del mes sube igual. Ese es el efecto rebote, y por eso el indicador es por turno y el seguimiento trimestral.</div>
+  </section>
+
+  <!-- 10 -->
+  <section class="slide s-five" data-time="" data-title="A cinco años" aria-label="A cinco años, si va bien">
+    <div class="head">
+      <h2 class="r" style="--i:0">A cinco años, si va bien</h2>
+      <p class="sub r" style="--i:1">Escenario de crecimiento: de 21 a unos 2.100 negocios.</p>
+    </div>
+    <div class="plot r" style="--i:2">
+      <p class="cap">g de CO₂e neto por turno · <b>escenario alto</b> · <span class="j">escenario bajo</span></p>
+      <svg class="traj" viewBox="0 0 600 362" role="img" aria-label="Gramos de CO2e neto por turno, 2026 a 2031. Escenario alto: 136, 60, 30, 18, 13 y 11. Escenario bajo: 13, 3,6, menos 0,2, menos 1,7, menos 2,3 y menos 2,5.">
+        <line x1="60" x2="580" y1="199.2" y2="199.2" class="gl"/><text x="48" y="203.2" text-anchor="end">50</text><line x1="60" x2="580" y1="101.9" y2="101.9" class="gl"/><text x="48" y="105.9" text-anchor="end">100</text>
+        <line x1="60" x2="580" y1="296.5" y2="296.5" class="zero"/><text x="48" y="300.5" text-anchor="end">0</text>
+        <polygon points="60.0,31.4 164.0,179.5 268.0,238.4 372.0,261.9 476.0,271.2 580.0,274.9 580.0,301.4 476.0,300.9 372.0,299.8 268.0,296.9 164.0,289.6 60.0,271.3" class="band"/>
+        <polyline points="60.0,31.4 164.0,179.5 268.0,238.4 372.0,261.9 476.0,271.2 580.0,274.9" class="lh" pathLength="1"/>
+        <polyline points="60.0,271.3 164.0,289.6 268.0,296.9 372.0,299.8 476.0,300.9 580.0,301.4" class="ll" pathLength="1"/>
+        <circle cx="60.0" cy="31.4" r="4" class="dh" style="--i:0"/><circle cx="164.0" cy="179.5" r="4" class="dh" style="--i:1"/><circle cx="268.0" cy="238.4" r="4" class="dh" style="--i:2"/><circle cx="372.0" cy="261.9" r="4" class="dh" style="--i:3"/><circle cx="476.0" cy="271.2" r="4" class="dh" style="--i:4"/><circle cx="580.0" cy="274.9" r="4" class="dh" style="--i:5"/><circle cx="60.0" cy="271.3" r="4" class="dl" style="--i:0"/><circle cx="164.0" cy="289.6" r="4" class="dl" style="--i:1"/><circle cx="268.0" cy="296.9" r="4" class="dl" style="--i:2"/><circle cx="372.0" cy="299.8" r="4" class="dl" style="--i:3"/><circle cx="476.0" cy="300.9" r="4" class="dl" style="--i:4"/><circle cx="580.0" cy="301.4" r="4" class="dl" style="--i:5"/>
+        <text x="72.0" y="36.4" class="vl">136 g</text>
+        <text x="580.0" y="260.9" class="vl" text-anchor="middle">11 g</text>
+        <text x="72.0" y="291.3" class="vl vj">13 g</text>
+        <text x="580.0" y="320.5" class="vl vj" text-anchor="middle">−2,5 g</text>
+        <text x="60.0" y="352" text-anchor="middle">2026</text><text x="164.0" y="352" text-anchor="middle">2027</text><text x="268.0" y="352" text-anchor="middle">2028</text><text x="372.0" y="352" text-anchor="middle">2029</text><text x="476.0" y="352" text-anchor="middle">2030</text><text x="580.0" y="352" text-anchor="middle">2031</text>
+      </svg>
+    </div>
+    <div class="vol">
+      <div class="r" style="--i:3"><div class="big"><span class="count" data-to="50500">50.500</span></div><p>turnos por mes en 2031</p></div>
+      <div class="r" style="--i:4"><div class="big"><span class="count" data-to="677">677</span><span class="unit"> mil</span></div><p>turnos en cinco años</p></div>
+      <div class="j r" style="--i:5"><div class="big"><span class="count" data-to="68">68</span> a <span class="count" data-to="338">338</span><span class="unit"> mil</span></div><p>hojas de papel menos en cinco años</p></div>
+    </div>
+    <p class="even r" style="--i:6">En el escenario bajo, desde mediados de 2028 cada turno evita más de lo que genera.</p>
+    <p class="src r" style="--i:7">Escenario hipotético, no pronóstico. Supuestos: crecimiento ×100 en cinco años (unas 2,5 veces por año), 24 turnos por negocio, servidor y desarrollo fijos, factores de agosto de 2026. En el escenario alto el total del mes crece con la escala: efecto rebote.</p>
+    <div class="notes">Ahora miremos a cinco años, si las cosas salen bien: de 21 a unos 2.100 negocios. Como el servidor y el desarrollo son fijos, cada turno pesa cada vez menos: en el escenario alto baja de 136 a 11 gramos. En el bajo, desde mediados de 2028 cada turno evita más de lo que genera. En volumen: unos 677 mil turnos en cinco años y entre 68 y 338 mil hojas de papel menos. Es un escenario, no un pronóstico. Y lo digo: en el escenario alto el total sube igual, es el efecto rebote, por eso hay que medir.</div>
+  </section>
+
+  <!-- 11 -->
   <section class="slide s-label" data-time="17:00" data-title="La etiqueta" aria-label="La etiqueta ambiental del turno">
     <div class="left">
       <h2 class="r" style="--i:0">La etiqueta ambiental del turno</h2>
@@ -655,7 +766,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
     <div class="notes">La parte creativa. Si un alimento trae su tabla nutricional, un servicio digital podría traer su etiqueta ambiental. Por turno: entre 13 y 136 gramos netos. Es información para decidir, que es lo que pide el principio de acceso a la información.</div>
   </section>
 
-  <!-- 10 -->
+  <!-- 12 -->
   <section class="slide s-sga" data-time="18:00" data-title="Qué hacer" aria-label="Qué hacer: sistema de gestión ambiental">
     <div>
       <h2 class="r" style="--i:0">Un sistema de gestión ambiental a escala startup</h2>
@@ -671,7 +782,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
     <div class="notes">Progresividad: empezar por poco. La medida de más impacto es la IA proporcional, porque es lo que más pesa en el balance. Memoria curada: el asistente consulta un resumen ordenado del proyecto (método de wiki de Karpathy) en vez de releer todo. Contexto acotado: mandar solo lo necesario en cada llamada. Modelo proporcional: modelos chicos para tareas simples. Menos iteraciones: pedir bien una vez. Lo mide el indicador de llamadas de IA por funcionalidad. También mails livianos. Verificar: CO2e por turno, llamadas de IA por funcionalidad y mails por reserva. Publicar el resultado conecta con acceso a la información. La Evaluación de Impacto B es gratuita y online y sirve de diagnóstico sin certificar.</div>
   </section>
 
-  <!-- 11 -->
+  <!-- 13 -->
   <section class="slide dark s-end" data-time="19:00" data-title="Conclusión" aria-label="Conclusión">
     <h2 class="r" style="--i:0">Lo digital también pesa. <span class="soft">Medirlo antes de que crezca es prevenir.</span></h2>
     <p class="lead r" style="--i:1">El papel que evitamos es lo de menos. La huella está en cómo construimos el software, y eso lo decidimos los que diseñamos sistemas.</p>
@@ -697,7 +808,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
   const still = new URLSearchParams(location.search).has("static");
   if (still) document.documentElement.classList.add("static");
   const reduce = still || matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const fmt = (v, d) => v.toLocaleString("es-AR", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const fmt = (v, d) => v.toLocaleString("es-AR", { minimumFractionDigits: d, maximumFractionDigits: d }).replace("-", "−");
   let cur = -1;
 
   // Barras del balance: ancho proporcional sobre 60 kg
