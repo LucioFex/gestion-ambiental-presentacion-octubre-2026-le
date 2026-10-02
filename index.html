@@ -57,7 +57,7 @@ body {
 }
 .stage[data-theme="dark"] { background: var(--carbon); }
 
-/* Columna de horarios: la agenda es el progreso */
+/* Columna del recorrido: muestra dónde estás y qué viene */
 .rail {
   position: absolute;
   left: 0; top: 0; bottom: 0;
@@ -76,23 +76,12 @@ body {
   cursor: pointer;
   display: block;
   font-family: var(--texto);
-  font-size: calc(var(--u) * 1.5);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: .02em;
+  font-size: calc(var(--u) * 1.45);
   color: var(--gris-claro);
-  line-height: 1.15;
+  line-height: 1.2;
+  padding-right: calc(var(--u) * 1.5);
   position: relative;
   transition: color .4s var(--ease);
-}
-.rail button span {
-  display: block;
-  font-size: calc(var(--u) * 1.2);
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition: max-height .5s var(--ease), opacity .4s var(--ease);
-  letter-spacing: 0;
-  white-space: nowrap;
 }
 .rail button::before {
   content: "";
@@ -110,7 +99,6 @@ body {
 .stage[data-theme="dark"] .rail button.done { color: #77726a; }
 .rail button.now { color: var(--carbon); font-weight: 600; }
 .stage[data-theme="dark"] .rail button.now { color: var(--papel); }
-.rail button.now span { max-height: 3em; opacity: .75; font-weight: 400; }
 .rail button.now::before { transform: scale(1); }
 .rail button:hover { color: var(--oro-tinta); }
 .stage[data-theme="dark"] .rail button:hover { color: var(--oro); }
@@ -717,11 +705,11 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
     el.style.width = (parseFloat(el.dataset.v) / 60 * 100) + "%";
   });
 
-  // Columna de horarios
+  // Columna del recorrido
   slides.forEach((s, i) => {
     const b = document.createElement("button");
     b.type = "button";
-    b.innerHTML = `${s.dataset.time}<span>${s.dataset.title}</span>`;
+    b.textContent = s.dataset.title;
     b.setAttribute("aria-label", `Ir a ${s.dataset.title}`);
     b.addEventListener("click", e => { e.stopPropagation(); go(i); });
     rail.appendChild(b);
