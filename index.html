@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>¿Cuánto contamina sacar un turno?</title>
+<meta name="description" content="Balance ambiental de una startup digital: el caso diVenuo. Primer parcial de Gestión Ambiental, UCEMA, 2 de octubre de 2026.">
+<meta name="theme-color" content="#1F1F1F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:ital,wght@0,400..700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --papel: #F8F4EB;
+  --papel-2: #F1EBDD;
+  --carbon: #1F1F1F;
+  --carbon-2: #2A2927;
+  --oro: #C9AD64;
+  --oro-tinta: #8A6D2F;
+  --jade: #3F7D6E;
+  --jade-claro: #CFE0DA;
+  --gris: #625D57;
+  --gris-claro: #9A948A;
+  --regla: #E6DECD;
+  --crema-tenue: #D8D2C4;
+  --display: "Bricolage Grotesque", "Hanken Grotesk", system-ui, sans-serif;
+  --texto: "Hanken Grotesk", system-ui, sans-serif;
+  --ease: cubic-bezier(.16, 1, .3, 1);
+  --rail: 10.5;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--carbon);
+  color: var(--carbon);
+  font-family: var(--texto);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-variant-numeric: lining-nums;
+}
+::selection { background: var(--oro); color: var(--carbon); }
+:focus-visible { outline: 2px solid var(--oro); outline-offset: 3px; border-radius: 2px; }
+
+/* Escenario 16:9 que entra en cualquier pantalla apaisada */
+.stage {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(100vw, 177.78vh);
+  height: min(100vh, 56.25vw);
+  container-type: size;
+  background: var(--papel);
+  overflow: hidden;
+  transition: background-color .7s var(--ease);
+  --u: 1cqh;
+}
+.stage[data-theme="dark"] { background: var(--carbon); }
+
+/* Columna de horarios: la agenda es el progreso */
+.rail {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: calc(var(--rail) * 1cqw);
+  padding: calc(var(--u) * 7) 0 calc(var(--u) * 6) calc(var(--u) * 3.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid var(--regla);
+  z-index: 5;
+  transition: border-color .7s var(--ease);
+}
+.stage[data-theme="dark"] .rail { border-color: #3a3835; }
+.rail button {
+  all: unset;
+  cursor: pointer;
+  display: block;
+  font-family: var(--texto);
+  font-size: calc(var(--u) * 1.5);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .02em;
+  color: var(--gris-claro);
+  line-height: 1.15;
+  position: relative;
+  transition: color .4s var(--ease);
+}
+.rail button span {
+  display: block;
+  font-size: calc(var(--u) * 1.2);
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height .5s var(--ease), opacity .4s var(--ease);
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+.rail button::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--u) * -1.8);
+  top: calc(var(--u) * .55);
+  width: calc(var(--u) * .7);
+  height: calc(var(--u) * .7);
+  border-radius: 50%;
+  background: var(--oro);
+  transform: scale(0);
+  transition: transform .5s var(--ease);
+}
+.rail button.done { color: var(--gris); }
+.stage[data-theme="dark"] .rail button.done { color: #77726a; }
+.rail button.now { color: var(--carbon); font-weight: 600; }
+.stage[data-theme="dark"] .rail button.now { color: var(--papel); }
+.rail button.now span { max-height: 3em; opacity: .75; font-weight: 400; }
+.rail button.now::before { transform: scale(1); }
+.rail button:hover { color: var(--oro-tinta); }
+.stage[data-theme="dark"] .rail button:hover { color: var(--oro); }
+
+/* Barra de progreso para pantallas angostas */
+.bar { display: none; }
+
+/* Slides */
+.slide {
+  position: absolute;
+  top: 0; bottom: 0; right: 0;
+  left: calc(var(--rail) * 1cqw);
+  padding: calc(var(--u) * 7) calc(var(--u) * 8) calc(var(--u) * 9.5) calc(var(--u) * 7);
+  display: grid;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(calc(var(--u) * 3));
+  transition: opacity .6s var(--ease), transform .8s var(--ease), visibility 0s linear .8s;
+  /* renglones de la agenda */
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--u) * 4.4 - 1px), var(--regla) calc(var(--u) * 4.4 - 1px), var(--regla) calc(var(--u) * 4.4));
+  background-position: 0 calc(var(--u) * 2.4);
+}
+.slide.prev { transform: translateY(calc(var(--u) * -3)); }
+.slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity .6s var(--ease) .12s, transform .9s var(--ease) .12s, visibility 0s;
+}
+.slide.dark { background-image: none; color: var(--papel); }
+
+/* Reveal escalonado */
+.r {
+  opacity: 0;
+  transform: translateY(calc(var(--u) * 2.2));
+  filter: blur(6px);
+  transition: opacity .7s var(--ease), transform .9s var(--ease), filter .7s var(--ease);
+  transition-delay: calc(var(--i, 0) * 110ms + 250ms);
+}
+.slide.active .r { opacity: 1; transform: none; filter: none; }
+
+/* Tipografía */
+h1, h2 {
+  font-family: var(--display);
+  font-weight: 750;
+  letter-spacing: -0.025em;
+  line-height: .98;
+  text-wrap: balance;
+  font-variation-settings: "opsz" 96;
+}
+h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
+.big {
+  font-family: var(--display);
+  font-weight: 800;
+  font-variation-settings: "opsz" 96;
+  letter-spacing: -0.035em;
+  line-height: .85;
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap;
+}
+.unit { font-size: .36em; letter-spacing: -0.01em; font-weight: 700; }
+.lead { font-size: calc(var(--u) * 2.6); line-height: 1.3; color: var(--gris); max-width: 34ch; text-wrap: pretty; }
+.dark .lead { color: var(--crema-tenue); }
+.words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--u) * 1) calc(var(--u) * 3.2);
+  font-size: calc(var(--u) * 2.3);
+  font-weight: 600;
+}
+.src {
+  position: absolute;
+  left: calc(var(--u) * 7);
+  right: calc(var(--u) * 8);
+  bottom: calc(var(--u) * 3);
+  font-size: calc(var(--u) * 1.35);
+  line-height: 1.4;
+  color: var(--gris);
+  max-width: 120ch;
+}
+.dark .src { color: var(--gris-claro); }
+.jade { color: var(--jade); }
+.oro { color: var(--oro); }
+
+/* 1 · Portada */
+.s-cover { align-content: center; }
+.s-cover h1 { font-size: calc(var(--u) * 14); max-width: 11ch; color: var(--papel); letter-spacing: -0.035em; }
+.s-cover h1 em { font-style: normal; color: var(--oro); }
+.s-cover .lead { margin-top: calc(var(--u) * 4); font-size: calc(var(--u) * 2.9); max-width: 40ch; }
+.s-cover .who {
+  margin-top: calc(var(--u) * 7);
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: start;
+  gap: calc(var(--u) * .6) calc(var(--u) * 6);
+  font-size: calc(var(--u) * 1.8);
+  color: var(--gris-claro);
+}
+.s-cover .who b { color: var(--papel); font-weight: 600; }
+
+/* 2 · La pregunta */
+.s-q { grid-template-columns: 1.35fr 1fr; align-items: center; gap: calc(var(--u) * 6); }
+.s-q blockquote {
+  font-family: var(--display);
+  font-weight: 650;
+  font-size: calc(var(--u) * 5.2);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  font-variation-settings: "opsz" 72;
+}
+.s-q cite { display: block; margin-top: calc(var(--u) * 3); font-size: calc(var(--u) * 1.9); font-style: italic; color: var(--gris); }
+.s-q .yes { justify-self: end; text-align: right; }
+.s-q .yes .big { font-size: calc(var(--u) * 30); }
+.s-q .yes p { margin-top: calc(var(--u) * 2.5); font-size: calc(var(--u) * 2.4); line-height: 1.3; color: var(--gris); }
+.s-q .yes p b { color: var(--carbon); font-weight: 600; }
+
+/* 3 · El caso */
+.s-case { grid-template-rows: auto 1fr; }
+.s-case .mid { display: grid; grid-template-columns: auto 1fr; align-items: end; gap: calc(var(--u) * 8); align-self: center; }
+.s-case .big { font-size: calc(var(--u) * 33); }
+.s-case .tag { font-size: calc(var(--u) * 2.6); font-weight: 600; margin-top: calc(var(--u) * 1.5); }
+.s-case dl { display: grid; gap: calc(var(--u) * 2.6); padding-bottom: calc(var(--u) * 2); }
+.s-case dt { font-family: var(--display); font-weight: 750; font-size: calc(var(--u) * 5); letter-spacing: -0.02em; line-height: 1; font-variation-settings: "opsz" 72; }
+.s-case dd { font-size: calc(var(--u) * 1.9); color: var(--gris); margin-top: calc(var(--u) * .5); }
+
+/* 4 · El marco */
+.s-law { grid-template-columns: auto 1fr; grid-template-rows: auto 1fr; column-gap: calc(var(--u) * 7); }
+.s-law h2 { grid-column: 1 / -1; }
+.s-law .art { align-self: center; }
+.s-law .art .big { font-size: calc(var(--u) * 36); }
+.s-law .art small { display: block; font-size: calc(var(--u) * 1.9); color: var(--gris); margin-top: calc(var(--u) * 1); }
+.s-law .right { align-self: center; display: grid; gap: calc(var(--u) * 4.5); }
+.s-law blockquote { font-size: calc(var(--u) * 3); line-height: 1.25; max-width: 30ch; }
+.s-law blockquote b { font-weight: 700; }
+.s-law .princ { display: grid; grid-template-columns: repeat(2, auto); justify-content: start; gap: calc(var(--u) * 1.2) calc(var(--u) * 5); }
+.s-law .princ li { list-style: none; font-family: var(--display); font-weight: 700; font-size: calc(var(--u) * 3.3); letter-spacing: -0.015em; font-variation-settings: "opsz" 48; }
+.s-law .princ-h { font-size: calc(var(--u) * 1.7); color: var(--gris); margin-bottom: calc(var(--u) * -2.6); }
+
+/* 5 · Lo que ahorra */
+.s-save { grid-template-columns: 1fr auto; grid-template-rows: auto 1fr; column-gap: calc(var(--u) * 6); }
+.s-save h2 { grid-column: 1 / -1; }
+.s-save .papers { align-self: center; display: grid; gap: calc(var(--u) * 1.6); }
+.s-save .papers li { list-style: none; display: flex; align-items: center; gap: calc(var(--u) * 2); font-size: calc(var(--u) * 2.6); }
+.s-save .papers svg { width: calc(var(--u) * 3.6); height: calc(var(--u) * 3.6); flex: none; color: var(--jade); }
+.s-save .papers li s { text-decoration-thickness: 2px; text-decoration-color: var(--jade); }
+.s-save .num { align-self: center; text-align: right; }
+.s-save .big { font-size: calc(var(--u) * 17); color: var(--jade); }
+.s-save .num p { margin-top: calc(var(--u) * 2); font-size: calc(var(--u) * 2.3); color: var(--gris); }
+.s-save .num .verdict { margin-top: calc(var(--u) * 3.5); font-family: var(--display); font-size: calc(var(--u) * 4.2); font-weight: 750; color: var(--carbon); letter-spacing: -0.02em; font-variation-settings: "opsz" 72; }
+
+/* 6 · Operar */
+.s-ops { grid-template-rows: auto 1fr; }
+.s-ops .mid { align-self: center; display: grid; grid-template-columns: auto 1fr; gap: calc(var(--u) * 8); align-items: center; }
+.s-ops .big { font-size: calc(var(--u) * 19); }
+.s-ops .mid p.tag { font-size: calc(var(--u) * 2.3); color: var(--gris); margin-top: calc(var(--u) * 2); }
+.s-ops .parts { display: grid; gap: calc(var(--u) * 2.6); }
+.s-ops .parts li { list-style: none; display: grid; grid-template-columns: calc(var(--u) * 4) 1fr; align-items: center; column-gap: calc(var(--u) * 2); }
+.s-ops .parts svg { width: calc(var(--u) * 3.4); height: calc(var(--u) * 3.4); color: var(--carbon); }
+.s-ops .parts b { font-family: var(--display); font-weight: 700; font-size: calc(var(--u) * 3.4); letter-spacing: -0.015em; font-variation-settings: "opsz" 48; }
+.s-ops .parts span { grid-column: 2; font-size: calc(var(--u) * 1.8); color: var(--gris); }
+
+/* 7 · IA */
+.s-ai { grid-template-rows: auto 1fr; }
+.s-ai h2 { color: var(--papel); }
+.s-ai .mid { align-self: center; display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--u) * 6); align-items: end; }
+.s-ai .big { font-size: calc(var(--u) * 18); color: var(--papel); }
+.s-ai .big.oro { color: var(--oro); }
+.s-ai .mid p { margin-top: calc(var(--u) * 2.4); font-size: calc(var(--u) * 2.4); color: var(--crema-tenue); }
+.s-ai .wh { margin-top: calc(var(--u) * 3.5); display: flex; gap: calc(var(--u) * 6); font-size: calc(var(--u) * 2); color: var(--gris-claro); }
+.s-ai .wh b { display: block; font-family: var(--display); font-size: calc(var(--u) * 3.6); color: var(--papel); font-weight: 700; letter-spacing: -0.015em; }
+
+/* 8 · Balance */
+.s-bal { grid-template-columns: 1fr calc(var(--u) * 46); grid-template-rows: auto 1fr; column-gap: calc(var(--u) * 7); }
+.s-bal h2 { grid-column: 1 / -1; }
+.chart { align-self: center; display: grid; gap: calc(var(--u) * 3.6); }
+.chart .row { display: grid; grid-template-columns: 1fr; gap: calc(var(--u) * .9); }
+.chart .lbl { display: flex; justify-content: space-between; align-items: baseline; font-size: calc(var(--u) * 2.1); font-weight: 600; }
+.chart .lbl em { font-style: normal; font-weight: 500; color: var(--gris); font-variant-numeric: tabular-nums; }
+.chart .track { position: relative; height: calc(var(--u) * 3.6); }
+.chart .lo, .chart .hi {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  border-radius: 0 3px 3px 0;
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 1.4s var(--ease);
+}
+.chart .hi { opacity: .28; transition-delay: calc(var(--i) * 160ms + 600ms); }
+.chart .lo { transition-delay: calc(var(--i) * 160ms + 400ms); }
+.slide.active .chart .lo, .slide.active .chart .hi { transform: scaleX(1); }
+.chart .papel .lo, .chart .papel .hi { background: var(--jade); }
+.chart .prod .lo, .chart .prod .hi { background: var(--gris); }
+.chart .ia .lo, .chart .ia .hi { background: var(--carbon); }
+.chart .axis { position: relative; height: calc(var(--u) * 2.4); border-top: 1px solid var(--carbon); font-size: calc(var(--u) * 1.4); color: var(--gris); font-variant-numeric: tabular-nums; }
+.chart .axis span { position: absolute; top: calc(var(--u) * .7); transform: translateX(-50%); }
+.chart .axis span:first-child { transform: none; }
+.chart .axis span:last-child { transform: translateX(-100%); }
+.chart .axis-cap { font-size: calc(var(--u) * 1.4); color: var(--gris); margin-top: calc(var(--u) * -2.6); text-align: right; }
+.s-bal .side { align-self: center; }
+.s-bal .side .big { font-size: calc(var(--u) * 11.5); }
+.s-bal .side .big .unit { font-size: .42em; }
+.s-bal .side p { font-size: calc(var(--u) * 2.3); line-height: 1.3; color: var(--gris); margin-top: calc(var(--u) * 2); }
+.s-bal .side .km { margin-top: calc(var(--u) * 5); padding-top: calc(var(--u) * 2.4); border-top: 1px solid var(--regla); }
+.s-bal .side .km b { color: var(--carbon); font-weight: 600; }
+
+/* 9 · Etiqueta */
+.s-label { grid-template-columns: 1fr calc(var(--u) * 54); column-gap: calc(var(--u) * 6); align-items: center; }
+.s-label .left .lead { margin-top: calc(var(--u) * 3.5); }
+.s-label .left .laws { margin-top: calc(var(--u) * 5); font-size: calc(var(--u) * 1.8); color: var(--gris); line-height: 1.5; }
+.printer { position: relative; align-self: center; }
+.printer .slot {
+  height: calc(var(--u) * 2.2);
+  border-radius: calc(var(--u) * 1.1);
+  background: var(--carbon);
+  margin: 0 calc(var(--u) * -2);
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 calc(var(--u) * .5) calc(var(--u) * 1.2) rgba(31, 31, 31, .25);
+}
+.printer .feed { overflow: hidden; margin-top: calc(var(--u) * -1.1); }
+.ticket {
+  background: #FFFDF7;
+  border: calc(var(--u) * .35) solid var(--carbon);
+  padding: calc(var(--u) * 3.2) calc(var(--u) * 3) calc(var(--u) * 2.4);
+  transform: translateY(-101%);
+  transition: transform 2.6s cubic-bezier(.45, .05, .25, 1) .45s;
+  box-shadow: 0 calc(var(--u) * 1.4) calc(var(--u) * 3) rgba(31, 31, 31, .12);
+}
+.slide.active .ticket { transform: none; }
+.ticket .t-h { font-family: var(--display); font-weight: 800; font-size: calc(var(--u) * 5); letter-spacing: -0.025em; line-height: 1; font-variation-settings: "opsz" 96; }
+.ticket .t-p { font-size: calc(var(--u) * 1.8); margin-top: calc(var(--u) * .8); padding-bottom: calc(var(--u) * 1.2); border-bottom: calc(var(--u) * 1.2) solid var(--carbon); }
+.ticket .t-s { font-size: calc(var(--u) * 1.6); font-weight: 700; padding: calc(var(--u) * .9) 0; border-bottom: 1px solid var(--carbon); }
+.ticket .t-r {
+  display: flex; justify-content: space-between; gap: calc(var(--u) * 2);
+  font-size: calc(var(--u) * 2.15);
+  padding: calc(var(--u) * 1.1) 0;
+  border-bottom: 1px solid #bdb7ab;
+  font-variant-numeric: tabular-nums;
+}
+.ticket .t-r b { font-weight: 700; white-space: nowrap; }
+.ticket .t-r.jade b { color: var(--jade); }
+.ticket .t-tot {
+  display: flex; justify-content: space-between; align-items: baseline;
+  border-top: calc(var(--u) * .7) solid var(--carbon);
+  margin-top: calc(var(--u) * -.1);
+  padding: calc(var(--u) * 1.3) 0 calc(var(--u) * 1.2);
+  border-bottom: 1px solid var(--carbon);
+}
+.ticket .t-tot span, .ticket .t-tot b { white-space: nowrap; }
+.ticket .t-tot span { font-family: var(--display); font-weight: 800; font-size: calc(var(--u) * 3); font-variation-settings: "opsz" 72; }
+.ticket .t-tot b { font-family: var(--display); font-weight: 800; font-size: calc(var(--u) * 4.4); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.ticket .t-f { font-size: calc(var(--u) * 1.3); color: var(--gris); margin-top: calc(var(--u) * 1.1); line-height: 1.4; }
+/* cada línea aparece cuando la etiqueta pasa por la ranura */
+.ticket .ln { opacity: 0; transition: opacity .25s linear; transition-delay: calc(var(--i) * 230ms + 650ms); }
+.slide.active .ticket .ln { opacity: 1; }
+
+/* 10 · SGA */
+.s-sga { grid-template-rows: auto 1fr; }
+.s-sga .sub { font-size: calc(var(--u) * 2.2); color: var(--gris); margin-top: calc(var(--u) * 2.2); }
+.week { align-self: center; display: grid; grid-template-columns: repeat(4, 1fr); border-left: 1px solid var(--regla); }
+.week > div { padding: 0 calc(var(--u) * 3); border-right: 1px solid var(--regla); }
+.week .L { font-family: var(--display); font-weight: 800; font-size: calc(var(--u) * 15); line-height: .9; letter-spacing: -0.03em; color: var(--carbon); font-variation-settings: "opsz" 96; }
+.week .n { font-size: calc(var(--u) * 2.4); font-weight: 700; margin-top: calc(var(--u) * 2.2); }
+.week .d { font-size: calc(var(--u) * 2.1); color: var(--gris); margin-top: calc(var(--u) * .8); line-height: 1.3; }
+.week .key .L { color: var(--jade); }
+.week .key .d { color: var(--carbon); font-weight: 500; }
+
+/* 11 · Cierre */
+.s-end { align-content: center; }
+.s-end h2 { font-size: calc(var(--u) * 9.6); max-width: 14ch; color: var(--papel); letter-spacing: -0.03em; line-height: 1; }
+.s-end h2 .soft { color: var(--gris-claro); }
+.s-end .lead { margin-top: calc(var(--u) * 4.5); max-width: 46ch; }
+.s-end .ask { margin-top: calc(var(--u) * 6); font-family: var(--display); font-size: calc(var(--u) * 4); font-weight: 700; color: var(--oro); letter-spacing: -0.015em; }
+
+/* Notas del orador */
+.notes { display: none; }
+.np {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  width: min(980px, calc(100vw - 32px));
+  transform: translate(-50%, calc(100% + 32px));
+  background: rgba(31, 31, 31, .96);
+  color: var(--papel);
+  border: 1px solid #3a3835;
+  border-radius: 14px;
+  padding: 18px 22px 16px;
+  font-size: 17px;
+  line-height: 1.5;
+  z-index: 20;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .4);
+  transition: transform .5s var(--ease);
+}
+.np.on { transform: translate(-50%, 0); }
+.np .np-h { display: flex; justify-content: space-between; gap: 16px; font-size: 13px; color: var(--gris-claro); margin-bottom: 8px; }
+.np .np-h b { color: var(--oro); font-weight: 600; }
+.np .np-n { margin-top: 10px; font-size: 13px; color: var(--gris-claro); }
+.hint {
+  position: fixed; right: 16px; bottom: 12px; z-index: 6;
+  font-size: 12px; color: var(--gris-claro);
+  opacity: 0; transition: opacity .6s;
+  pointer-events: none;
+}
+.hint.on { opacity: .8; }
+
+/* Pantallas angostas o verticales: la agenda pasa a una sola columna */
+@media (max-aspect-ratio: 4/3) {
+  body { overflow: hidden; }
+  .stage { width: 100vw; height: 100dvh; --u: 1.95cqw; }
+  .rail { display: none; }
+  .bar {
+    display: block;
+    position: absolute; left: 0; top: 0; height: 3px; width: 100%;
+    z-index: 6;
+    background: transparent;
+  }
+  .bar i { display: block; height: 100%; background: var(--oro); width: 100%; transform: scaleX(0); transform-origin: left; transition: transform .6s var(--ease); }
+  .slide {
+    left: 0;
+    padding: calc(var(--u) * 7) calc(var(--u) * 3.4) calc(var(--u) * 12);
+    align-content: center;
+    overflow-y: auto;
+  }
+  .src { left: calc(var(--u) * 3.4); right: calc(var(--u) * 3.4); bottom: calc(var(--u) * 3); font-size: calc(var(--u) * 1.25); }
+  h2 { font-size: calc(var(--u) * 6.8); }
+  .s-cover h1 { font-size: calc(var(--u) * 9.6); }
+  .s-cover .who { grid-template-columns: 1fr; font-size: calc(var(--u) * 2); }
+  .s-q, .s-save, .s-bal, .s-label, .s-law { grid-template-columns: minmax(0, 1fr); gap: calc(var(--u) * 5); grid-template-rows: none; }
+  .s-q .yes { justify-self: start; text-align: left; }
+  .s-q .yes .big { font-size: calc(var(--u) * 20); }
+  .s-case, .s-ops, .s-ai, .s-sga { grid-template-rows: none; gap: calc(var(--u) * 5); }
+  .s-case .mid, .s-ops .mid, .s-ai .mid { grid-template-columns: minmax(0, 1fr); gap: calc(var(--u) * 5); }
+  .s-case .big { font-size: calc(var(--u) * 26); }
+  .s-law .art .big { font-size: calc(var(--u) * 22); }
+  .s-law .princ-h { margin-bottom: 0; }
+  .s-save .num { text-align: left; }
+  .s-save .big { font-size: calc(var(--u) * 11); }
+  .s-ops .big { font-size: calc(var(--u) * 11.5); }
+  .s-ai .big { font-size: calc(var(--u) * 15); }
+  .s-bal .side .big { font-size: calc(var(--u) * 10); }
+  .s-law .princ li { font-size: calc(var(--u) * 2.7); }
+  .s-law .princ { column-gap: calc(var(--u) * 3); }
+  .ticket .t-tot b { font-size: calc(var(--u) * 3.6); }
+  .s-label .printer { margin: 0 calc(var(--u) * 2); }
+  .s-label .left .laws { display: none; }
+  .week { grid-template-columns: repeat(2, 1fr); row-gap: calc(var(--u) * 4); }
+  .week .L { font-size: calc(var(--u) * 11); }
+  .s-end h2 { font-size: calc(var(--u) * 8.6); }
+  .np { font-size: 15px; }
+}
+
+.static *, .static *::before, .static *::after { transition: none !important; animation: none !important; }
+.static .r { filter: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; transition-delay: 0s !important; animation: none !important; }
+  .r { filter: none; transform: none; }
+}
+</style>
+</head>
+<body>
+<main class="stage" id="stage" data-theme="dark" aria-roledescription="presentación">
+  <nav class="rail" id="rail" aria-label="Slides"></nav>
+  <div class="bar" aria-hidden="true"><i id="barFill"></i></div>
+
+  <!-- 1 -->
+  <section class="slide dark s-cover" data-time="09:00" data-title="Portada" aria-label="Portada">
+    <h1 class="r" style="--i:0">¿Cuánto contamina sacar un <em>turno</em>?</h1>
+    <p class="lead r" style="--i:1">Balance ambiental de una startup digital: el caso diVenuo</p>
+    <div class="who r" style="--i:2">
+      <b>Luciano Esteban</b><span>Primer parcial · Gestión Ambiental · UCEMA</span>
+      <span>Dr. Federico Addati y Dr. Pablo Gasipi</span><span>2 de octubre de 2026</span>
+    </div>
+    <div class="notes">Presentarse. Ingeniería en Informática. Trabajo en ciberseguridad y desarrollo diVenuo, una plataforma de turnos. El trabajo usa ese caso real para responder una pregunta de la primera clase.</div>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide s-q" data-time="10:00" data-title="La pregunta" aria-label="La pregunta">
+    <div>
+      <blockquote class="r" style="--i:0">“¿Puede un mensaje de WhatsApp o una consulta a ChatGPT tener impacto ambiental?”</blockquote>
+      <cite class="r" style="--i:1">Dr. Addati, primera clase de 2026</cite>
+    </div>
+    <div class="yes">
+      <div class="big r" style="--i:3">Sí.</div>
+      <p class="r" style="--i:4">La pregunta útil es <b>cuánto</b>,<br>comparado con qué.</p>
+    </div>
+    <div class="notes">Abrir con la pregunta a mano alzada: ¿quién sacó un turno por WhatsApp o por una app este mes? Retomar la pregunta del profe. Respuesta corta: sí. Todo lo digital corre sobre algo físico. Lo interesante es cuánto y comparado con qué. Recorrido: el caso, el marco legal, lo que ahorra, lo que genera, el balance y qué hacer.</div>
+  </section>
+
+  <!-- 3 -->
+  <section class="slide s-case" data-time="11:00" data-title="El caso" aria-label="El caso">
+    <h2 class="r" style="--i:0">diVenuo: turnos online para negocios de barrio</h2>
+    <div class="mid">
+      <div class="r" style="--i:1">
+        <div class="big"><span class="count" data-to="505">505</span></div>
+        <p class="tag">turnos en agosto de 2026</p>
+      </div>
+      <dl>
+        <div class="r" style="--i:2"><dt><span class="count" data-to="1322">1.322</span></dt><dd>turnos desde el inicio</dd></div>
+        <div class="r" style="--i:3"><dt>21</dt><dd>negocios reales: barberías, tatuajes, peluquerías caninas</dd></div>
+        <div class="r" style="--i:4"><dt>8 de 10</dt><dd>tomaban turnos por mensaje directo</dd></div>
+      </dl>
+    </div>
+    <p class="src r" style="--i:5">Fuente: mediciones agregadas de la base de producción, septiembre de 2026, sin datos personales. Relevamiento propio sobre 83 negocios del AMBA.</p>
+    <div class="notes">Es mi proyecto desde mayo de 2026. Escala chica a propósito: el foco no es el total sino qué aspectos ambientales tiene un servicio así y cómo cambian si crece. Antes de digitalizarse, estos negocios usaban los papeles del mostrador.</div>
+  </section>
+
+  <!-- 4 -->
+  <section class="slide s-law" data-time="12:00" data-title="El marco" aria-label="El marco legal">
+    <h2 class="r" style="--i:0">El deber de preservar alcanza también al software</h2>
+    <div class="art r" style="--i:1">
+      <div class="big"><span class="count" data-to="41">41</span></div>
+      <small>Artículo 41, Constitución Nacional</small>
+    </div>
+    <div class="right">
+      <blockquote class="r" style="--i:2">Todos los habitantes gozan del derecho a un ambiente sano […] y <b>tienen el deber de preservarlo.</b></blockquote>
+      <p class="princ-h r" style="--i:3">Ley 25.675, art. 4</p>
+      <ul class="princ">
+        <li class="r" style="--i:4">Prevención</li>
+        <li class="r" style="--i:5">Precaución</li>
+        <li class="r" style="--i:6">Sustentabilidad</li>
+        <li class="r" style="--i:7">Progresividad</li>
+      </ul>
+    </div>
+    <div class="notes">El 41 no habla solo de industrias pesadas, habla de actividades productivas. Fallo Mendoza: el ambiente es un bien colectivo. De la Ley General del Ambiente uso cuatro principios. Precaución es el clave para la IA: no hay cifra cierta, pero eso no es excusa.</div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide s-save" data-time="13:00" data-title="Lo que ahorra" aria-label="Lo que ahorra">
+    <h2 class="r" style="--i:0">Los papeles del mostrador</h2>
+    <ul class="papers">
+      <li class="r" style="--i:1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h11.5a2 2 0 0 1 2 2v15H7a2 2 0 0 1-2-2z"/><path d="M5 18.5a2 2 0 0 1 2-2h11.5"/><path d="M9 7.5h6M9 11h4"/></svg><s>Cuaderno de turnos</s></li>
+      <li class="r" style="--i:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v10l-6 6H4z"/><path d="M14 20v-6h6"/></svg><s>Post-it con el teléfono</s></li>
+      <li class="r" style="--i:3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="1.5"/><path d="M9 2.5h6v3H9z"/><path d="M8.5 11l1.5 1.5 3-3M8.5 16.5h7"/></svg><s>Planilla de consentimiento</s></li>
+      <li class="r" style="--i:4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4z"/><path d="M14 7v10" stroke-dasharray="1.5 2"/></svg><s>Tarjetita del próximo turno</s></li>
+    </ul>
+    <div class="num">
+      <div class="big r" style="--i:2"><span class="count" data-to="0.3" data-dec="1">0,3</span> a <span class="count" data-to="1.7" data-dec="1">1,7</span><span class="unit"> kg</span></div>
+      <p class="r" style="--i:3">de CO₂e evitados por mes</p>
+      <p class="verdict r" style="--i:5">Real, pero chico.</p>
+    </div>
+    <p class="src r" style="--i:6">Supuesto: 0,1 a 0,5 hojas A4 por turno, 505 turnos (agosto de 2026). 6,7 g de CO₂e por hoja (DESNZ, 2024). Los recordatorios bajan las ausencias cerca de 25 % (Robotham et al., 2016).</p>
+    <div class="notes">El papel no es el villano: cumple su función. Supuse entre 0,1 y 0,5 hojas por turno. Da 0,3 a 1,7 kg de CO2e por mes. Digo que es chico para no caer en greenwashing. El otro aporte es la eficiencia: el recordatorio libera horarios y evita el local abierto sin servicio.</div>
+  </section>
+
+  <!-- 6 -->
+  <section class="slide s-ops" data-time="14:00" data-title="Lo que genera" aria-label="Lo que genera: operar el producto">
+    <h2 class="r" style="--i:0">La huella que no se ve</h2>
+    <div class="mid">
+      <div class="r" style="--i:1">
+        <div class="big"><span class="count" data-to="2.1" data-dec="1">2,1</span> a <span class="count" data-to="9.5" data-dec="1">9,5</span><span class="unit"> kg</span></div>
+        <p class="tag">de CO₂e por mes para operar el producto</p>
+      </div>
+      <ul class="parts">
+        <li class="r" style="--i:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="4" y="3.5" width="16" height="7" rx="1.5"/><rect x="4" y="13.5" width="16" height="7" rx="1.5"/><path d="M8 7h.01M8 17h.01M12 7h4M12 17h4"/></svg><b>Nube</b><span>AWS San Pablo, 5 a 12 kWh por mes</span></li>
+        <li class="r" style="--i:3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3.5 6l8.5 7 8.5-7"/></svg><b>Mails</b><span>hasta 3 por reserva online</span></li>
+        <li class="r" style="--i:4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16M7 20l-3-3M7 20l3-3M17 20V4M17 4l-3 3M17 4l3 3"/></svg><b>Tráfico</b><span>10 a 25 GB de páginas y panel</span></li>
+      </ul>
+    </div>
+    <p class="src r" style="--i:5">Red argentina: 0,345 kg CO₂e/kWh (Ember, 2024). Mails: Berners-Lee (2020). Datos: Aslan et al. (2018) y Sustainable Web Design. AWS declara 100 % renovable por certificados, se usa el factor físico de la red.</p>
+    <div class="notes">Ya operar el producto pesa más que el papel que evita. La nube: AWS dice 100 % renovable, pero es por certificados. Las emisiones físicas no son cero, por eso uso el factor de la red. Mails y tráfico: Berners-Lee y Aslan.</div>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide dark s-ai" data-time="15:00" data-title="Programarlo con IA" aria-label="Programarlo con IA">
+    <h2 class="r" style="--i:0">Programarlo con IA</h2>
+    <div class="mid">
+      <div class="r" style="--i:1">
+        <div class="big"><span class="count" data-to="43681">43.681</span></div>
+        <p>llamadas a un asistente de código en 30 días</p>
+      </div>
+      <div class="r" style="--i:3">
+        <div class="big oro"><span class="count" data-to="6">6</span> a <span class="count" data-to="60">60</span><span class="unit"> kg</span></div>
+        <p>de CO₂e por mes</p>
+      </div>
+    </div>
+    <div class="wh r" style="--i:4">
+      <div><b>2,9 Wh</b>por consulta, IEA 2024</div>
+      <div><b>0,3 Wh</b>por consulta, Epoch AI 2025</div>
+    </div>
+    <p class="src r" style="--i:5">Registro local de Claude Code al 1/10/2026. 13 a 127 kWh en el mes con la red mundial: 0,471 kg CO₂e/kWh (Ember, 2024). Google informó 0,24 Wh por consulta a Gemini (2025).</p>
+    <div class="notes">La respuesta a la pregunta del profe. Dato real de mi registro de uso: 43.681 llamadas en 30 días. Rango por la discusión: IEA 2,9 Wh, Epoch y Google 0,24 a 0,3 Wh. Uso el rango. Precaución: la falta de certeza no es excusa. Y el valor alto puede quedarse corto, porque cada llamada carga mucho contexto.</div>
+  </section>
+
+  <!-- 8 -->
+  <section class="slide s-bal" data-time="16:00" data-title="El balance" aria-label="El balance">
+    <h2 class="r" style="--i:0">Hoy diVenuo genera más de lo que evita</h2>
+    <div class="chart r" style="--i:1" role="img" aria-label="kg de CO2e por mes. Papel que evita: 0,3 a 1,7. Operar el producto: 2,1 a 9,5. Programarlo con IA: 6,2 a 59,7.">
+      <div class="row papel" style="--i:0">
+        <div class="lbl">Papel que evita <em>0,3 a 1,7 kg</em></div>
+        <div class="track"><i class="hi" data-v="1.69"></i><i class="lo" data-v="0.34"></i></div>
+      </div>
+      <div class="row prod" style="--i:1">
+        <div class="lbl">Operar el producto <em>2,1 a 9,5 kg</em></div>
+        <div class="track"><i class="hi" data-v="9.45"></i><i class="lo" data-v="2.07"></i></div>
+      </div>
+      <div class="row ia" style="--i:2">
+        <div class="lbl">Programarlo con IA <em>6,2 a 59,7 kg</em></div>
+        <div class="track"><i class="hi" data-v="59.66"></i><i class="lo" data-v="6.17"></i></div>
+      </div>
+      <div class="axis"><span style="left:0">0</span><span style="left:33.33%">20</span><span style="left:66.66%">40</span><span style="left:100%">60</span></div>
+      <p class="axis-cap">kg de CO₂e por mes</p>
+    </div>
+    <div class="side">
+      <div class="big r" style="--i:3"><span class="count" data-to="18">18</span> a <span class="count" data-to="35">35</span><span class="unit"> veces</span></div>
+      <p class="r" style="--i:4">pesa la IA frente al papel evitado, escenario contra escenario</p>
+      <p class="km r" style="--i:5"><b>Igual es chico.</b> El valor alto equivale a unos 350 km en auto por mes.</p>
+    </div>
+    <p class="src r" style="--i:6">Elaboración propia, agosto de 2026. Barra llena: escenario bajo. Barra clara: escenario alto. El efecto rebote, en Lange, Pohl y Santarius (2020).</p>
+    <div class="notes">La idea central. Digitalizar no es verde por defecto. Pero ojo con el pánico: 60 kg es menos que lo que emite una persona argentina en una semana. Lo importante es la estructura: servidor y desarrollo son costos fijos, se diluyen con escala. El riesgo es el efecto rebote. Y la palanca está en cómo se construye.</div>
+  </section>
+
+  <!-- 9 -->
+  <section class="slide s-label" data-time="17:00" data-title="La etiqueta" aria-label="La etiqueta ambiental del turno">
+    <div class="left">
+      <h2 class="r" style="--i:0">La etiqueta ambiental del turno</h2>
+      <p class="lead r" style="--i:1">Como la tabla nutricional de un alimento.</p>
+      <p class="laws r" style="--i:2">Acceso a la información ambiental: Ley 25.831 y Acuerdo de Escazú.<br>Educación ambiental: Ley 27.621.</p>
+    </div>
+    <div class="printer" aria-label="Etiqueta ambiental de un turno">
+      <div class="slot" aria-hidden="true"></div>
+      <div class="feed">
+        <div class="ticket">
+          <div class="t-h ln" style="--i:0">Etiqueta ambiental</div>
+          <div class="t-p ln" style="--i:1">Porción: 1 turno · agosto de 2026</div>
+          <div class="t-s ln" style="--i:2">CO₂ equivalente</div>
+          <div class="t-r ln" style="--i:3"><span>Operar el producto</span><b>4,1 a 18,7 g</b></div>
+          <div class="t-r ln" style="--i:4"><span>Programarlo con IA</span><b>12 a 118 g</b></div>
+          <div class="t-r jade ln" style="--i:5"><span>Papel que evita</span><b>−3,4 a −0,7 g</b></div>
+          <div class="t-tot ln" style="--i:6"><span>Total neto</span><b>13 a 136 g</b></div>
+          <div class="t-f ln" style="--i:7">Estimación propia de orden de magnitud. Factores: Ember 2024, DESNZ 2024, Berners-Lee 2020, IEA 2024, Epoch AI 2025.</div>
+        </div>
+      </div>
+    </div>
+    <div class="notes">La parte creativa. Si un alimento trae su tabla nutricional, un servicio digital podría traer su etiqueta ambiental. Por turno: entre 13 y 136 gramos netos. Es información para decidir, que es lo que pide el principio de acceso a la información.</div>
+  </section>
+
+  <!-- 10 -->
+  <section class="slide s-sga" data-time="18:00" data-title="Qué hacer" aria-label="Qué hacer: sistema de gestión ambiental">
+    <div>
+      <h2 class="r" style="--i:0">Un sistema de gestión ambiental a escala startup</h2>
+      <p class="sub r" style="--i:1">Lógica PHVA de la ISO 14001, sin certificar.</p>
+    </div>
+    <div class="week">
+      <div class="r" style="--i:2"><div class="L">P</div><div class="n">Planificar</div><div class="d">Política ambiental de cinco líneas</div></div>
+      <div class="key r" style="--i:3"><div class="L">H</div><div class="n">Hacer</div><div class="d">IA proporcional, mails livianos</div></div>
+      <div class="r" style="--i:4"><div class="L">V</div><div class="n">Verificar</div><div class="d">CO₂e por turno, cada trimestre</div></div>
+      <div class="r" style="--i:5"><div class="L">A</div><div class="n">Actuar</div><div class="d">Publicar el resultado</div></div>
+    </div>
+    <p class="src r" style="--i:6">Diagnóstico externo gratuito: Evaluación de Impacto B, Sistema B.</p>
+    <div class="notes">Progresividad: empezar por poco. La medida de más impacto es la IA proporcional, porque es lo que más pesa en el balance. Verificar: CO2e por turno, llamadas de IA por funcionalidad y mails por reserva. Publicar el resultado conecta con acceso a la información. La Evaluación de Impacto B es gratuita y online y sirve de diagnóstico sin certificar.</div>
+  </section>
+
+  <!-- 11 -->
+  <section class="slide dark s-end" data-time="19:00" data-title="Conclusión" aria-label="Conclusión">
+    <h2 class="r" style="--i:0">Lo digital también pesa. <span class="soft">Medirlo antes de que crezca es prevenir.</span></h2>
+    <p class="lead r" style="--i:1">El papel que evitamos es lo de menos. La huella está en cómo construimos el software, y eso lo decidimos los que diseñamos sistemas.</p>
+    <p class="ask r" style="--i:2">¿Preguntas?</p>
+    <div class="notes">Cerrar con la mirada personal: yo hubiera defendido que diVenuo es verde porque reemplaza papel. Los números dicen otra cosa, y antes ni miraba ese número. El artículo 41 incluye al software.</div>
+  </section>
+</main>
+
+<aside class="np" id="np" aria-live="polite" aria-hidden="true">
+  <div class="np-h"><b id="npT"></b><span>N cierra · F pantalla completa</span></div>
+  <div id="npB"></div>
+  <div class="np-n" id="npN"></div>
+</aside>
+<div class="hint" id="hint">← → para avanzar · N notas · F pantalla completa</div>
+
+<script>
+(() => {
+  const stage = document.getElementById("stage");
+  const slides = [...stage.querySelectorAll(".slide")];
+  const rail = document.getElementById("rail");
+  const barFill = document.getElementById("barFill");
+  const np = document.getElementById("np");
+  const still = new URLSearchParams(location.search).has("static");
+  if (still) document.documentElement.classList.add("static");
+  const reduce = still || matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const fmt = (v, d) => v.toLocaleString("es-AR", { minimumFractionDigits: d, maximumFractionDigits: d });
+  let cur = -1;
+
+  // Barras del balance: ancho proporcional sobre 60 kg
+  stage.querySelectorAll(".chart i[data-v]").forEach(el => {
+    el.style.width = (parseFloat(el.dataset.v) / 60 * 100) + "%";
+  });
+
+  // Columna de horarios
+  slides.forEach((s, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.innerHTML = `${s.dataset.time}<span>${s.dataset.title}</span>`;
+    b.setAttribute("aria-label", `Ir a ${s.dataset.title}`);
+    b.addEventListener("click", e => { e.stopPropagation(); go(i); });
+    rail.appendChild(b);
+  });
+  const railBtns = [...rail.children];
+
+  function count(slide) {
+    slide.querySelectorAll(".count").forEach((el, k) => {
+      const to = parseFloat(el.dataset.to);
+      const d = parseInt(el.dataset.dec || "0", 10);
+      if (reduce) { el.textContent = fmt(to, d); return; }
+      const dur = to > 1000 ? 1900 : 1300;
+      const delay = 450 + k * 120;
+      const t0 = performance.now() + delay;
+      el.textContent = fmt(0, d);
+      const tick = now => {
+        if (cur !== slides.indexOf(slide)) { el.textContent = fmt(to, d); return; }
+        const p = Math.min(Math.max((now - t0) / dur, 0), 1);
+        const e = 1 - Math.pow(2, -10 * p);
+        el.textContent = fmt(p >= 1 ? to : to * e, d);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      // respaldo si el navegador pausa requestAnimationFrame
+      setTimeout(() => { el.textContent = fmt(to, d); }, delay + dur + 150);
+    });
+  }
+
+  function go(i, fromHash) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    if (i === cur) return;
+    slides.forEach((s, k) => {
+      s.classList.toggle("active", k === i);
+      s.classList.toggle("prev", k < i);
+      s.setAttribute("aria-hidden", k === i ? "false" : "true");
+      s.inert = k !== i;
+    });
+    railBtns.forEach((b, k) => {
+      b.classList.toggle("now", k === i);
+      b.classList.toggle("done", k < i);
+      if (k === i) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current");
+    });
+    stage.dataset.theme = slides[i].classList.contains("dark") ? "dark" : "light";
+    barFill.style.transform = `scaleX(${(i + 1) / slides.length})`;
+    cur = i;
+    count(slides[i]);
+    notes();
+    if (!fromHash) history.replaceState(null, "", "#" + (i + 1));
+  }
+
+  function notes() {
+    const s = slides[cur];
+    document.getElementById("npT").textContent = `${cur + 1} de ${slides.length} · ${s.dataset.title}`;
+    document.getElementById("npB").textContent = s.querySelector(".notes")?.textContent.trim() || "";
+    const nx = slides[cur + 1];
+    document.getElementById("npN").textContent = nx ? `Sigue: ${nx.dataset.title}` : "Última slide";
+  }
+  function toggleNotes() {
+    const on = np.classList.toggle("on");
+    np.setAttribute("aria-hidden", on ? "false" : "true");
+  }
+  function fullscreen() {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  }
+
+  const fromHash = () => {
+    const n = parseInt(location.hash.slice(1), 10);
+    return Number.isFinite(n) ? n - 1 : 0;
+  };
+
+  document.addEventListener("keydown", e => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const k = e.key;
+    if (["ArrowRight", "ArrowDown", "PageDown", " ", "Enter"].includes(k)) { e.preventDefault(); go(cur + 1); }
+    else if (["ArrowLeft", "ArrowUp", "PageUp", "Backspace"].includes(k)) { e.preventDefault(); go(cur - 1); }
+    else if (k === "Home") go(0);
+    else if (k === "End") go(slides.length - 1);
+    else if (k === "n" || k === "N") toggleNotes();
+    else if (k === "f" || k === "F") fullscreen();
+  });
+
+  stage.addEventListener("click", e => {
+    if (e.target.closest("button, a")) return;
+    const r = stage.getBoundingClientRect();
+    if (e.clientX - r.left < r.width * 0.28) go(cur - 1); else go(cur + 1);
+  });
+  np.addEventListener("click", toggleNotes);
+
+  let sx = 0, sy = 0, st = 0;
+  stage.addEventListener("touchstart", e => { const t = e.touches[0]; sx = t.clientX; sy = t.clientY; st = Date.now(); }, { passive: true });
+  stage.addEventListener("touchend", e => {
+    const t = e.changedTouches[0];
+    const dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.3 && Date.now() - st < 800) {
+      e.preventDefault();
+      go(cur + (dx < 0 ? 1 : -1));
+    }
+  });
+
+  window.addEventListener("hashchange", () => go(fromHash(), true));
+  go(fromHash(), true);
+  history.replaceState(null, "", "#" + (cur + 1));
+
+  const hint = document.getElementById("hint");
+  if (!still && matchMedia("(hover: hover)").matches) {
+    setTimeout(() => hint.classList.add("on"), 1200);
+    setTimeout(() => hint.classList.remove("on"), 6500);
+  }
+})();
+</script>
+</body>
+</html>
