@@ -446,6 +446,47 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
 .dark .eqv svg { color: var(--oro); }
 .s-save .num .eqv { justify-content: flex-end; text-align: right; }
 
+/* Mini gráficos de las equivalencias */
+.eqv.vzrow { gap: calc(var(--u) * 2.2); }
+.vz { flex: none; position: relative; }
+.vz-road { width: calc(var(--u) * 26); height: calc(var(--u) * 7.4); }
+.vz-road .tr, .vz-road .rg, .vz-road .sd { position: absolute; bottom: calc(var(--u) * 2.1); height: calc(var(--u) * 1.4); border-radius: 3px; }
+.vz-road .tr { left: 0; right: 0; background: var(--papel-2); box-shadow: inset 0 0 0 1px var(--regla); }
+.vz-road .rg { left: var(--lo); width: calc(var(--hi) - var(--lo)); background: var(--oro); opacity: .5; transform-origin: left; transform: scaleX(0); transition: transform 1.3s var(--ease) .9s; }
+.vz-road .sd { left: 0; width: var(--lo); background: var(--oro-tinta); transform-origin: left; transform: scaleX(0); transition: transform .9s var(--ease) .5s; }
+.slide.active .vz-road .rg, .slide.active .vz-road .sd { transform: scaleX(1); }
+.vz-road .car { position: absolute; left: 0; bottom: calc(var(--u) * 3.3); width: calc(var(--u) * 4.4); height: calc(var(--u) * 4.4); transform: translateX(-50%); color: var(--carbon); transition: left 2s var(--ease) .5s; }
+.slide.active .vz-road .car { left: var(--hi); }
+.vz-road b { position: absolute; bottom: 0; font-family: var(--texto) !important; font-weight: 500 !important; font-size: calc(var(--u) * 1.4); color: var(--gris); letter-spacing: 0 !important; }
+.vz-road .k0 { left: 0; } .vz-road .k1 { right: 0; }
+.dark .vz-road .tr { background: #34322f; box-shadow: none; }
+.dark .vz-road .car { color: var(--papel); }
+.dark .vz-road .sd { background: var(--oro); }
+.dark .vz-road b { color: var(--gris-claro); }
+.eqv .vz-clock { width: calc(var(--u) * 10); height: calc(var(--u) * 10); color: var(--papel); overflow: visible; }
+.vz-clock circle { fill: none; stroke-width: 4.5; transform: rotate(-90deg); transform-origin: 24px 24px; }
+.vz-clock .cb { stroke: #34322f; }
+.vz-clock .ch, .vz-clock .cl { stroke-dasharray: 0 60; transition: stroke-dasharray 1.6s var(--ease) .7s; }
+.vz-clock .ch { stroke: var(--oro); opacity: .55; }
+.vz-clock .cl { stroke: var(--oro); }
+.slide.active .vz-clock .ch, .slide.active .vz-clock .cl { stroke-dasharray: var(--v) 60; }
+.vz-ream { width: calc(var(--u) * 6.4); height: calc(var(--u) * 8.6); border: 2px solid var(--carbon); border-radius: 3px; background: #FFFDF7 repeating-linear-gradient(to top, transparent 0 calc(var(--u) * .55), var(--regla) calc(var(--u) * .55) calc(var(--u) * .62)); overflow: hidden; }
+.vz-ream i { position: absolute; left: 0; right: 0; bottom: 0; transform-origin: bottom; transform: scaleY(0); }
+.vz-ream .hi { height: calc(var(--hi) * 100%); background: var(--jade); opacity: .35; transition: transform 1.2s var(--ease) .9s; }
+.vz-ream .lo { height: calc(var(--lo) * 100%); background: var(--jade); transition: transform .8s var(--ease) .5s; }
+.slide.active .vz-ream i { transform: scaleY(1); }
+.vz-blocks { display: grid; grid-template-columns: repeat(8, calc(var(--u) * 3.4)); gap: calc(var(--u) * .6); }
+.vz-blocks i { height: calc(var(--u) * 3.4); border-radius: 2px; background: var(--carbon); opacity: 0; transition: opacity .3s linear; transition-delay: calc(var(--k) * 120ms + 600ms); }
+.vz-blocks i.l { background: var(--oro); }
+.slide.active .vz-blocks i.s { opacity: .9; }
+.slide.active .vz-blocks i.l { opacity: .55; }
+.vz-reams { display: grid; grid-template-columns: repeat(7, calc(var(--u) * 3.6)); gap: calc(var(--u) * .4); }
+.vz-reams svg { width: calc(var(--u) * 3.6); height: calc(var(--u) * 3.6); color: var(--jade); opacity: 0; transition: opacity .3s linear; transition-delay: calc(var(--k) * 70ms + 700ms); }
+.slide.active .vz-reams svg.s { opacity: 1; }
+.slide.active .vz-reams svg.l { opacity: .38; }
+.s-five .vol .eqv.vzrow { flex-direction: column; align-items: flex-start; gap: calc(var(--u) * 1); font-size: calc(var(--u) * 2); }
+.s-save .num .eqv.vzrow { justify-content: flex-end; }
+
 /* Notas del orador */
 .notes { display: none; }
 .np {
@@ -510,7 +551,10 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
   .s-law .art .big { font-size: calc(var(--u) * 22); }
   .s-law .princ-h { margin-bottom: 0; }
   .s-save .num { text-align: left; }
-  .s-save .num .eqv { justify-content: flex-start; text-align: left; }
+  .s-save .num .eqv, .s-save .num .eqv.vzrow { justify-content: flex-start; text-align: left; }
+  .eqv.vzrow { flex-direction: column; align-items: flex-start; gap: calc(var(--u) * 1.2); }
+  .vz-road { width: calc(var(--u) * 30); }
+  .vz-blocks { grid-template-columns: repeat(8, calc(var(--u) * 3.6)); }
   .s-save .big { font-size: calc(var(--u) * 11); }
   .s-ops .big { font-size: calc(var(--u) * 11.5); }
   .s-ai .big { font-size: calc(var(--u) * 15); }
@@ -639,8 +683,8 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
       <div class="big r" style="--i:2"><span class="count" data-to="0.3" data-dec="1">0,3</span> a <span class="count" data-to="1.7" data-dec="1">1,7</span><span class="unit"> kg</span></div>
       <p class="r" style="--i:3">de CO₂e evitados por mes</p>
       <p class="verdict r" style="--i:5">Real, pero chico.</p>
-      <p class="eqv r" style="--i:6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><span>50 a 250 hojas: de <b>un décimo a media resma</b></span></p>
-      <p class="eqv r" style="--i:7"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v4a1 1 0 0 1-1 1h-1.2M3 13v4a1 1 0 0 0 1 1h1.2M3 13h18M8.8 18h6.4"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg><span>como andar <b>2 a 10 km</b> en auto</span></p>
+      <div class="eqv vzrow r" style="--i:6"><div class="vz vz-ream" style="--lo:0.1;--hi:0.5" aria-hidden="true"><i class="hi"></i><i class="lo"></i></div><span>50 a 250 hojas: de <b>un décimo a media resma</b></span></div>
+      <div class="eqv vzrow r" style="--i:7"><div class="vz vz-road" style="--lo:3.3%;--hi:16.7%" aria-hidden="true"><i class="tr"></i><i class="rg"></i><i class="sd"></i><svg class="car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v4a1 1 0 0 1-1 1h-1.2M3 13v4a1 1 0 0 0 1 1h1.2M3 13h18M8.8 18h6.4"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg><b class="k0">0</b><b class="k1">60 km</b></div><span>como andar <b>2 a 10 km</b> en auto</span></div>
     </div>
     <p class="src r" style="--i:8">Supuesto: 0,1 a 0,5 hojas A4 por turno, 505 turnos (agosto de 2026). 6,7 g de CO₂e por hoja (DESNZ, 2024). Los recordatorios bajan las ausencias cerca de 25 % (Robotham et al., 2016).</p>
     <div class="notes">El papel no es el villano: cumple su función. Supuse entre 0,1 y 0,5 hojas por turno. Da 0,3 a 1,7 kg de CO2e por mes. Digo que es chico para no caer en greenwashing. El otro aporte es la eficiencia: el recordatorio libera horarios y evita el local abierto sin servicio.</div>
@@ -653,7 +697,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
       <div class="r" style="--i:1">
         <div class="big"><span class="count" data-to="2.1" data-dec="1">2,1</span> a <span class="count" data-to="9.5" data-dec="1">9,5</span><span class="unit"> kg</span></div>
         <p class="tag">de CO₂e por mes para operar el producto</p>
-        <p class="eqv" style="--i:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v4a1 1 0 0 1-1 1h-1.2M3 13v4a1 1 0 0 0 1 1h1.2M3 13h18M8.8 18h6.4"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg><span>como andar <b>12 a 56 km</b> en auto</span></p>
+        <div class="eqv vzrow" style="--i:2"><div class="vz vz-road" style="--lo:20.3%;--hi:92.7%" aria-hidden="true"><i class="tr"></i><i class="rg"></i><i class="sd"></i><svg class="car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v4a1 1 0 0 1-1 1h-1.2M3 13v4a1 1 0 0 0 1 1h1.2M3 13h18M8.8 18h6.4"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg><b class="k0">0</b><b class="k1">60 km</b></div><span>como andar <b>12 a 56 km</b> en auto</span></div>
       </div>
       <ul class="parts">
         <li class="r" style="--i:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="4" y="3.5" width="16" height="7" rx="1.5"/><rect x="4" y="13.5" width="16" height="7" rx="1.5"/><path d="M8 7h.01M8 17h.01M12 7h4M12 17h4"/></svg><b>Nube</b><span>AWS São Paulo (sa-east-1), 5 a 12 kWh por mes</span></li>
@@ -676,11 +720,11 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
       <div class="r" style="--i:3">
         <div class="big oro"><span class="count" data-to="6">6</span> a <span class="count" data-to="60">60</span><span class="unit"> kg</span></div>
         <p>de CO₂e por mes</p>
-        <p class="eqv" style="--i:3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v4a1 1 0 0 1-1 1h-1.2M3 13v4a1 1 0 0 0 1 1h1.2M3 13h18M8.8 18h6.4"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg><span>como andar <b>36 a 350 km</b> en auto</span></p>
+        <div class="eqv vzrow" style="--i:3"><div class="vz vz-road" style="--lo:9.0%;--hi:87.8%" aria-hidden="true"><i class="tr"></i><i class="rg"></i><i class="sd"></i><svg class="car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v4a1 1 0 0 1-1 1h-1.2M3 13v4a1 1 0 0 0 1 1h1.2M3 13h18M8.8 18h6.4"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg><b class="k0">0</b><b class="k1">400 km</b></div><span>como andar <b>36 a 350 km</b> en auto</span></div>
         <p class="fixed">Costo fijo de desarrollo: por turno, baja con la escala.</p>
       </div>
     </div>
-    <p class="eqv r ai-led" style="--i:4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></svg><span>Cada consulta: <b>0,3 a 2,9 Wh</b>, entre <b>2 y 17 minutos</b> de una lamparita LED</span></p>
+    <div class="eqv vzrow r ai-led" style="--i:4"><svg class="vz vz-clock" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" class="cb"/><circle cx="24" cy="24" r="20" class="ch" pathLength="60" style="--v:17.4"/><circle cx="24" cy="24" r="20" class="cl" pathLength="60" style="--v:1.8"/><g transform="translate(14 13) scale(.84)" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></g></svg><span>Cada consulta: <b>0,3 a 2,9 Wh</b>, de <b>2 a 17 minutos</b> de una lamparita LED</span></div>
     <p class="src r" style="--i:5">Registro local de Claude Code al 1/10/2026. Energía por consulta: 2,9 Wh (IEA, 2024) y 0,3 Wh (Epoch AI, 2025), lamparita LED de 10 W. 13 a 127 kWh en el mes con la red mundial: 0,471 kg CO₂e/kWh (Ember, 2024). Google informó 0,24 Wh por consulta a Gemini (2025).</p>
     <div class="notes">La respuesta a la pregunta del profe. Dato real de mi registro de uso: 43.681 llamadas en 30 días. Rango por la discusión: IEA 2,9 Wh, Epoch y Google 0,24 a 0,3 Wh. Uso el rango. Precaución: la falta de certeza no es excusa. Y el valor alto puede quedarse corto, porque cada llamada carga mucho contexto. Ojo: esto es construir el producto, no usarlo. Es un costo fijo: si la plataforma gestiona diez veces más turnos, por turno pesa casi diez veces menos.</div>
   </section>
@@ -708,7 +752,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
       <div class="big r" style="--i:3"><span class="count" data-to="18">18</span> a <span class="count" data-to="35">35</span><span class="unit"> veces</span></div>
       <p class="r" style="--i:4">pesa la IA frente al papel evitado, escenario contra escenario</p>
       <p class="km r" style="--i:5"><b>Es la etapa de arranque:</b> con pocos turnos, los costos fijos pesan más. Hoy genera más de lo que evita, y es chico.</p>
-      <p class="eqv r" style="--i:6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v4a1 1 0 0 1-1 1h-1.2M3 13v4a1 1 0 0 0 1 1h1.2M3 13h18M8.8 18h6.4"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg><span>El valor alto equivale a <b>unos 350 km en auto</b> por mes</span></p>
+      <div class="eqv vzrow r" style="--i:6"><div class="vz vz-road" style="--lo:9.0%;--hi:87.8%" aria-hidden="true"><i class="tr"></i><i class="rg"></i><i class="sd"></i><svg class="car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v4a1 1 0 0 1-1 1h-1.2M3 13v4a1 1 0 0 0 1 1h1.2M3 13h18M8.8 18h6.4"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg><b class="k0">0</b><b class="k1">400 km</b></div><span>El valor alto equivale a <b>unos 350 km en auto</b> por mes</span></div>
     </div>
     <p class="src r" style="--i:7">Elaboración propia, agosto de 2026. Auto promedio: 170 g de CO₂e por km. Barra llena: escenario bajo. Barra clara: escenario alto. El efecto rebote, en Lange, Pohl y Santarius (2020).</p>
     <div class="notes">La idea central. Usar diVenuo pesa poco: 4 a 19 g por turno. Y estamos en el arranque: con pocos turnos, los costos fijos pesan más por turno. Le pasa a cualquier servicio digital chico. Lo que más pesa es construirlo con IA. Igual, digitalizar no es verde por defecto: hoy genera más de lo que evita. Pero ojo con el pánico: 60 kg es menos que lo que emite una persona argentina en una semana. Lo importante es la estructura: servidor y desarrollo son costos fijos, se diluyen con escala. El riesgo es el efecto rebote. Y la palanca está en cómo se construye.</div>
@@ -782,7 +826,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
     </div>
     <div class="vol">
       <div class="r" style="--i:3"><div class="big"><span class="count" data-to="50500">50.500</span></div><p>turnos por mes en 2031</p></div>
-      <div class="j r" style="--i:5"><div class="big"><span class="count" data-to="68">68</span> a <span class="count" data-to="338">338</span><span class="unit"> mil</span></div><p>hojas de papel menos en cinco años</p><p class="eqv" style="--i:6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><span>unas <b>135 a 677 resmas</b></span></p></div>
+      <div class="j r" style="--i:5"><div class="big"><span class="count" data-to="68">68</span> a <span class="count" data-to="338">338</span><span class="unit"> mil</span></div><p>hojas de papel menos en cinco años</p><div class="eqv vzrow" style="--i:6"><div class="vz vz-reams" aria-hidden="true"><svg class="s" style="--k:0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><svg class="s" style="--k:1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><svg class="s" style="--k:2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><svg class="l" style="--k:3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><svg class="l" style="--k:4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><svg class="l" style="--k:5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><svg class="l" style="--k:6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><svg class="l" style="--k:7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><svg class="l" style="--k:8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><svg class="l" style="--k:9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><svg class="l" style="--k:10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><svg class="l" style="--k:11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><svg class="l" style="--k:12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg><svg class="l" style="--k:13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 11l8 4 8-4M4 15l8 4 8-4"/></svg></div><span><b>135 a 677 resmas</b>, cada ícono son 50</span></div></div>
     </div>
     <p class="even r" style="--i:6">En el escenario bajo, desde mediados de 2028 cada turno evita más de lo que genera.</p>
     <p class="src r" style="--i:7">Escenario hipotético, no pronóstico. Supuestos: crecimiento ×100 en cinco años (unas 2,5 veces por año), 24 turnos por negocio, servidor y desarrollo fijos, factores de agosto de 2026. En el escenario alto el total del mes crece con la escala: efecto rebote.</p>
@@ -794,7 +838,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
     <div class="left">
       <h2 class="r" style="--i:0">La etiqueta ambiental del turno</h2>
       <p class="lead r" style="--i:1">Como la tabla nutricional de un alimento.</p>
-      <p class="eqv r" style="--i:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v4a1 1 0 0 1-1 1h-1.2M3 13v4a1 1 0 0 0 1 1h1.2M3 13h18M8.8 18h6.4"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg><span>Un turno equivale a andar <b>80 a 800 metros</b> en auto</span></p>
+      <div class="eqv vzrow r" style="--i:2"><div class="vz vz-blocks" aria-hidden="true"><i class="s" style="--k:0"></i><i class="l" style="--k:1"></i><i class="l" style="--k:2"></i><i class="l" style="--k:3"></i><i class="l" style="--k:4"></i><i class="l" style="--k:5"></i><i class="l" style="--k:6"></i><i class="l" style="--k:7"></i></div><span>Un turno equivale a andar <b>80 a 800 metros</b> en auto: <b>de 1 a 8 cuadras</b></span></div>
       <p class="laws r" style="--i:3">Acceso a la información ambiental: Ley 25.831 y Acuerdo de Escazú.<br>Educación ambiental: Ley 27.621.</p>
     </div>
     <div class="printer" aria-label="Etiqueta ambiental de un turno">
