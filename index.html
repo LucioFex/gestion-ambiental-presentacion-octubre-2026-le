@@ -397,7 +397,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
 .s-scale .even { margin-top: calc(var(--u) * 4.5); font-family: var(--display); font-weight: 700; font-size: calc(var(--u) * 3); letter-spacing: -0.015em; color: var(--jade); font-variation-settings: "opsz" 48; max-width: 40ch; }
 
 /* A cinco años */
-.s-five { grid-template-columns: 1fr calc(var(--u) * 44); grid-template-rows: auto 1fr; column-gap: calc(var(--u) * 6); }
+.s-five { grid-template-columns: 1fr calc(var(--u) * 32); grid-template-rows: auto 1fr; column-gap: calc(var(--u) * 5); }
 .s-five .head { grid-column: 1 / -1; }
 .s-five .sub { font-size: calc(var(--u) * 2.2); color: var(--gris); margin-top: calc(var(--u) * 1.8); }
 .s-five .plot { align-self: center; }
@@ -422,16 +422,16 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
 .traj .dl { fill: var(--jade); }
 .slide.active .traj circle { opacity: 1; }
 .traj .eq { stroke: var(--jade); stroke-width: 1.5; stroke-dasharray: 4 4; }
-.traj .eqt { font-family: var(--display); font-weight: 700; font-size: 15px; fill: var(--jade); }
+.traj .eqt { font-family: var(--display); font-weight: 700; font-size: 16px; fill: var(--jade); }
 .traj .eqs { font-size: 12.5px; fill: var(--jade); }
-.traj .vl { font-family: var(--display); font-weight: 700; font-size: 17px; fill: var(--carbon); }
-.traj .lab { font-size: 13px; font-weight: 600; fill: var(--carbon); }
+.traj .vl { font-family: var(--display); font-weight: 700; font-size: 20px; fill: var(--carbon); }
+.traj .lab { font-size: 14px; font-weight: 600; fill: var(--carbon); }
 .traj .vj { fill: var(--jade); }
-.traj .arr { font-size: 12.5px; fill: var(--gris); }
-.traj .yr { font-size: 14px; fill: var(--carbon); font-weight: 600; }
+.traj .arr { font-size: 14px; fill: var(--gris); }
+.traj .yr { font-size: 15px; fill: var(--carbon); font-weight: 600; }
 .traj .ng { font-size: 12px; fill: var(--gris); }
-.s-five .vol { align-self: center; display: grid; gap: calc(var(--u) * 3); }
-.s-five .vol .big { font-size: calc(var(--u) * 7.4); }
+.s-five .vol { align-self: center; display: grid; gap: calc(var(--u) * 4); }
+.s-five .vol .big { font-size: calc(var(--u) * 6.8); }
 .s-five .vol .big .unit { font-size: .4em; }
 .s-five .vol p { font-size: calc(var(--u) * 1.9); color: var(--gris); margin-top: calc(var(--u) * .8); }
 .s-five .vol .j .big { color: var(--jade); }
@@ -731,56 +731,45 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
     </div>
     <div class="plot r" style="--i:2">
       <p class="leg-m">g de CO₂e neto por turno · <b>escenario alto</b> · <span>escenario bajo</span></p>
-      <svg class="traj" viewBox="0 0 660 384" role="img" aria-label="Gramos de CO2e neto por turno de 2026 a 2031. Escenario alto: baja de 136 a 11. Escenario bajo: baja de 13 a menos 2,5 y cruza el cero a mediados de 2028. Negocios: 21, 53, 132, 333, 836 y 2.100.">
-        <text x="64" y="16" class="ax">gramos de CO₂e neto por cada turno</text>
-        <line x1="64" x2="524" y1="208.4" y2="208.4" class="gl"/><text x="52" y="212.4" text-anchor="end">50</text>
-        <line x1="64" x2="524" y1="114.8" y2="114.8" class="gl"/><text x="52" y="118.8" text-anchor="end">100</text>
-        <rect x="64" y="301.9" width="460" height="28.1" class="win"/>
-        <text x="248.3" y="321.0" class="wint">evita más de lo que genera</text>
-        <line x1="64" x2="524" y1="301.9" y2="301.9" class="zero"/><text x="52" y="305.9" text-anchor="end">0</text>
-        <polygon points="64.0,47.1 156.0,189.4 248.0,246.1 340.0,268.6 432.0,277.6 524.0,281.2 524.0,306.6 432.0,306.2 340.0,305.1 248.0,302.3 156.0,295.3 64.0,277.7" class="band"/>
-        <polyline points="64.0,47.1 156.0,189.4 248.0,246.1 340.0,268.6 432.0,277.6 524.0,281.2" class="lh" pathLength="1"/>
-        <polyline points="64.0,277.7 156.0,295.3 248.0,302.3 340.0,305.1 432.0,306.2 524.0,306.6" class="ll" pathLength="1"/>
-        <line x1="240.3" x2="240.3" y1="171.0" y2="330.0" class="eq"/>
-        <text x="248.3" y="181.0" class="eqt">Equilibrio</text>
-        <text x="248.3" y="198.0" class="eqs">mediados de 2028,</text>
-        <text x="248.3" y="214.0" class="eqs">escenario bajo</text>
-        <circle cx="64.0" cy="47.1" r="4.5" class="dh" style="--i:0"/>
-        <circle cx="156.0" cy="189.4" r="4.5" class="dh" style="--i:1"/>
-        <circle cx="248.0" cy="246.1" r="4.5" class="dh" style="--i:2"/>
-        <circle cx="340.0" cy="268.6" r="4.5" class="dh" style="--i:3"/>
-        <circle cx="432.0" cy="277.6" r="4.5" class="dh" style="--i:4"/>
-        <circle cx="524.0" cy="281.2" r="4.5" class="dh" style="--i:5"/>
-        <circle cx="64.0" cy="277.7" r="4.5" class="dl" style="--i:0"/>
-        <circle cx="156.0" cy="295.3" r="4.5" class="dl" style="--i:1"/>
-        <circle cx="248.0" cy="302.3" r="4.5" class="dl" style="--i:2"/>
-        <circle cx="340.0" cy="305.1" r="4.5" class="dl" style="--i:3"/>
-        <circle cx="432.0" cy="306.2" r="4.5" class="dl" style="--i:4"/>
-        <circle cx="524.0" cy="306.6" r="4.5" class="dl" style="--i:5"/>
-        <text x="78.0" y="53.1" class="vl">136 g</text>
-        <text x="108.0" y="71.1" class="arr">arranque: pocos turnos</text>
-        <text x="108.0" y="87.1" class="arr">para repartir costos fijos</text>
-        <text x="538.0" y="279.2" class="vl">11 g</text>
-        <text x="538.0" y="261.2" class="lab">escenario alto</text>
-        <text x="538.0" y="320.6" class="vl vj">−2,5 g</text>
-        <text x="538.0" y="337.6" class="lab vj">escenario bajo</text>
-        <text x="64.0" y="358.0" text-anchor="middle" class="yr">2026</text>
-        <text x="64.0" y="376.0" text-anchor="middle" class="ng">21 negocios</text>
-        <text x="156.0" y="358.0" text-anchor="middle" class="yr">2027</text>
-        <text x="156.0" y="376.0" text-anchor="middle" class="ng">53 negocios</text>
-        <text x="248.0" y="358.0" text-anchor="middle" class="yr">2028</text>
-        <text x="248.0" y="376.0" text-anchor="middle" class="ng">132 negocios</text>
-        <text x="340.0" y="358.0" text-anchor="middle" class="yr">2029</text>
-        <text x="340.0" y="376.0" text-anchor="middle" class="ng">333 negocios</text>
-        <text x="432.0" y="358.0" text-anchor="middle" class="yr">2030</text>
-        <text x="432.0" y="376.0" text-anchor="middle" class="ng">836 negocios</text>
-        <text x="524.0" y="358.0" text-anchor="middle" class="yr">2031</text>
-        <text x="524.0" y="376.0" text-anchor="middle" class="ng">2.100 negocios</text>
+      <svg class="traj" viewBox="0 0 730 402" role="img" aria-label="Gramos de CO2e neto por turno de 2026 a 2031. Escenario alto: baja de 136 a 11. Escenario bajo: baja de 13 a menos 2,5 y cruza el cero a mediados de 2028. De 21 a 2.100 negocios.">
+        <text x="30" y="16" class="ax">gramos de CO₂e neto por turno</text>
+        <rect x="30" y="315.0" width="560" height="29.0" class="win"/>
+        <text x="254.7" y="335.0" class="wint">evita más de lo que genera</text>
+        <line x1="30" x2="590" y1="315.0" y2="315.0" class="zero"/>
+        <polyline points="30.0,51.4 142.0,198.6 254.0,257.2 366.0,280.5 478.0,289.8 590.0,293.5" class="lh" pathLength="1"/>
+        <polyline points="30.0,289.9 142.0,308.1 254.0,315.3 366.0,318.2 478.0,319.3 590.0,319.8" class="ll" pathLength="1"/>
+        <line x1="244.7" x2="244.7" y1="208.5" y2="344.0" class="eq"/>
+        <text x="254.7" y="220.5" class="eqt">Equilibrio · 2028</text>
+        <circle cx="30.0" cy="51.4" r="5" class="dh" style="--i:0"/>
+        <circle cx="142.0" cy="198.6" r="5" class="dh" style="--i:1"/>
+        <circle cx="254.0" cy="257.2" r="5" class="dh" style="--i:2"/>
+        <circle cx="366.0" cy="280.5" r="5" class="dh" style="--i:3"/>
+        <circle cx="478.0" cy="289.8" r="5" class="dh" style="--i:4"/>
+        <circle cx="590.0" cy="293.5" r="5" class="dh" style="--i:5"/>
+        <circle cx="30.0" cy="289.9" r="5" class="dl" style="--i:0"/>
+        <circle cx="142.0" cy="308.1" r="5" class="dl" style="--i:1"/>
+        <circle cx="254.0" cy="315.3" r="5" class="dl" style="--i:2"/>
+        <circle cx="366.0" cy="318.2" r="5" class="dl" style="--i:3"/>
+        <circle cx="478.0" cy="319.3" r="5" class="dl" style="--i:4"/>
+        <circle cx="590.0" cy="319.8" r="5" class="dl" style="--i:5"/>
+        <text x="46.0" y="58.4" class="vl">136 g</text>
+        <text x="112.0" y="58.4" class="arr">arranque</text>
+        <text x="606.0" y="295.5" class="vl">11 g</text>
+        <text x="606.0" y="275.5" class="lab">escenario alto</text>
+        <text x="606.0" y="333.8" class="vl vj">−2,5 g</text>
+        <text x="606.0" y="351.8" class="lab vj">escenario bajo</text>
+        <text x="30.0" y="374.0" text-anchor="middle" class="yr">2026</text>
+        <text x="142.0" y="374.0" text-anchor="middle" class="yr">2027</text>
+        <text x="254.0" y="374.0" text-anchor="middle" class="yr">2028</text>
+        <text x="366.0" y="374.0" text-anchor="middle" class="yr">2029</text>
+        <text x="478.0" y="374.0" text-anchor="middle" class="yr">2030</text>
+        <text x="590.0" y="374.0" text-anchor="middle" class="yr">2031</text>
+        <text x="30.0" y="394.0" text-anchor="middle" class="ng">21 negocios</text>
+        <text x="590.0" y="394.0" text-anchor="middle" class="ng">2.100 negocios</text>
       </svg>
     </div>
     <div class="vol">
       <div class="r" style="--i:3"><div class="big"><span class="count" data-to="50500">50.500</span></div><p>turnos por mes en 2031</p></div>
-      <div class="r" style="--i:4"><div class="big"><span class="count" data-to="677">677</span><span class="unit"> mil</span></div><p>turnos en cinco años</p></div>
       <div class="j r" style="--i:5"><div class="big"><span class="count" data-to="68">68</span> a <span class="count" data-to="338">338</span><span class="unit"> mil</span></div><p>hojas de papel menos en cinco años</p></div>
     </div>
     <p class="even r" style="--i:6">En el escenario bajo, desde mediados de 2028 cada turno evita más de lo que genera.</p>
