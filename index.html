@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#1F1F1F">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:ital,wght@0,400..700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:ital,wght@0,400..700;1,400&family=Outfit:wght@800&display=swap" rel="stylesheet">
 <style>
 :root {
   --papel: #F8F4EB;
@@ -385,6 +385,9 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
 .s-end .lead { margin-top: calc(var(--u) * 4.5); max-width: 46ch; }
 .s-end .ask { margin-top: calc(var(--u) * 6); font-family: var(--display); font-size: calc(var(--u) * 4); font-weight: 700; color: var(--oro); letter-spacing: -0.015em; }
 
+/* Wordmark de diVenuo: Outfit 800, punto propio y la V como cinta dorada */
+.dv { display: inline-block; height: 1.095em; width: 4em; vertical-align: -0.167em; overflow: visible; margin-right: .04em; }
+
 /* Notas del orador */
 .notes { display: none; }
 .np {
@@ -472,6 +475,18 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="dv" viewBox="17 8 336 92">
+    <text x="20" y="86" font-family="Outfit, sans-serif" font-weight="800" font-size="84" fill="currentColor" letter-spacing="-2">dı</text>
+    <circle cx="81" cy="26" r="9" fill="currentColor"/>
+    <g stroke-linejoin="round" stroke-width="5">
+      <path d="M96,26 L114,26 L138,86 L120,86 Z" fill="#C9AD64" stroke="#C9AD64"/>
+      <path d="M144,26 L162,26 L138,86 L124,72 Z" fill="#DCC488" stroke="#DCC488"/>
+      <path d="M120,86 L138,86 L124,72 Z" fill="#A8894A" stroke="#A8894A"/>
+    </g>
+    <text x="166" y="86" font-family="Outfit, sans-serif" font-weight="800" font-size="84" fill="currentColor" letter-spacing="-2">enuo</text>
+  </symbol>
+</svg>
 <main class="stage" id="stage" data-theme="dark" aria-roledescription="presentación">
   <nav class="rail" id="rail" aria-label="Slides"></nav>
   <div class="bar" aria-hidden="true"><i id="barFill"></i></div>
@@ -479,7 +494,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
   <!-- 1 -->
   <section class="slide dark s-cover" data-time="09:00" data-title="Portada" aria-label="Portada">
     <h1 class="r" style="--i:0">¿Cuánto contamina sacar un <em>turno</em>?</h1>
-    <p class="lead r" style="--i:1">Balance ambiental de una startup digital: el caso diVenuo</p>
+    <p class="lead r" style="--i:1">Balance ambiental de una startup digital: el caso <svg class="dv" role="img" aria-label="diVenuo"><use href="#dv"/></svg></p>
     <div class="who r" style="--i:2">
       <b>Luciano Esteban</b><span>Primer parcial · Gestión Ambiental · UCEMA</span>
       <span>Dr. Federico Addati y Dr. Pablo Gasipi</span><span>2 de octubre de 2026</span>
@@ -502,7 +517,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
 
   <!-- 3 -->
   <section class="slide s-case" data-time="11:00" data-title="El caso" aria-label="El caso">
-    <h2 class="r" style="--i:0">diVenuo: turnos online para negocios de barrio</h2>
+    <h2 class="r" style="--i:0"><svg class="dv" role="img" aria-label="diVenuo"><use href="#dv"/></svg>: turnos online para negocios de barrio</h2>
     <div class="mid">
       <div class="r" style="--i:1">
         <div class="big"><span class="count" data-to="505">505</span></div>
@@ -597,7 +612,7 @@ h2 { font-size: calc(var(--u) * 6.4); max-width: 22ch; }
 
   <!-- 8 -->
   <section class="slide s-bal" data-time="16:00" data-title="El balance" aria-label="El balance">
-    <h2 class="r" style="--i:0">Hoy diVenuo genera más de lo que evita</h2>
+    <h2 class="r" style="--i:0">Hoy <svg class="dv" role="img" aria-label="diVenuo"><use href="#dv"/></svg> genera más de lo que evita</h2>
     <div class="chart r" style="--i:1" role="img" aria-label="kg de CO2e por mes. Papel que evita: 0,3 a 1,7. Operar el producto: 2,1 a 9,5. Programarlo con IA: 6,2 a 59,7.">
       <div class="row papel" style="--i:0">
         <div class="lbl">Papel que evita <em>0,3 a 1,7 kg</em></div>
